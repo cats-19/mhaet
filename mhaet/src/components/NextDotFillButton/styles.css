@@ -1,0 +1,87 @@
+.next-dot-fill-button,
+.next-dot-fill-button * {
+  box-sizing: border-box;
+}
+
+.next-dot-fill-button {
+  appearance: none;
+  position: relative;
+  display: inline-flex;
+  height: 46px;
+  padding: 0 28px 0 40px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 1px solid rgba(214, 180, 115, 0.55);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #4a3f30;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 18px -4px rgba(180, 140, 70, 0.22);
+  transition:
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s ease,
+    border-color 0.4s ease;
+  user-select: none;
+}
+
+.next-dot-fill-button:hover {
+  border-color: rgba(212, 168, 92, 0.9);
+  box-shadow: 0 10px 28px -6px rgba(180, 135, 55, 0.3);
+}
+
+.next-dot-fill-button:active {
+  transform: scale(0.96);
+}
+
+/* Leading dot: starts as a small gold accent, then floods the pill on hover. */
+.next-dot-fill-button__fill {
+  position: absolute;
+  left: 19px;
+  top: calc(50% - 4.5px);
+  z-index: 1;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #d9ab5e;
+  box-shadow: 0 0 8px rgba(217, 171, 94, 0.5);
+  transition:
+    transform 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.4s ease;
+  pointer-events: none;
+}
+
+.next-dot-fill-button__label {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* Hover + keyboard focus: the pill fills with the same gold as the "together" shimmer. */
+.next-dot-fill-button:hover .next-dot-fill-button__fill,
+.next-dot-fill-button:focus-visible .next-dot-fill-button__fill {
+  transform: scale(45);
+  background-color: #fbe7b8;
+  box-shadow: none;
+}
+
+.next-dot-fill-button:focus-visible {
+  outline: 2px solid #caa152;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-dot-fill-button,
+  .next-dot-fill-button__fill {
+    transition: none;
+  }
+}

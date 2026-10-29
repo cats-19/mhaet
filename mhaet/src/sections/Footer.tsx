@@ -1,0 +1,144 @@
+import { Camera as Instagram } from "lucide-react";
+
+/**
+ * Footer: a full-bleed, soft landscape of rounded hills in light honey tones,
+ * matching the airy cream of the rest of the page, with contact details on top.
+ * No outer frame or bottom gap: the landscape runs to the edges of the screen.
+ */
+export function Footer() {
+  return (
+    <footer id="contact" className="relative w-full overflow-hidden bg-[#f5ecdb]">
+      <div className="relative min-h-[480px] w-full sm:min-h-[540px]">
+        {/* Landscape */}
+        <svg
+          viewBox="0 0 1440 540"
+          preserveAspectRatio="xMidYMax slice"
+          className="absolute inset-0 h-full w-full"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="ft-main" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#f0dcb0" />
+              <stop offset="100%" stopColor="#e4c48e" />
+            </linearGradient>
+            <linearGradient id="ft-ridge" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stopColor="#fbf0d6" />
+              <stop offset="100%" stopColor="#eed7a6" />
+            </linearGradient>
+            <linearGradient id="ft-deep" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#e9cc96" />
+              <stop offset="100%" stopColor="#dcb87c" />
+            </linearGradient>
+            <filter id="ft-blur" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="20" />
+            </filter>
+          </defs>
+
+          {/* Soft glowing halo behind the mound */}
+          <g filter="url(#ft-blur)" opacity="0.9">
+            <path
+              d="M 0 540 L 0 320 C 120 270 260 250 380 268 C 470 160 640 84 820 84 C 1000 84 1150 170 1220 280 C 1300 252 1380 260 1440 280 L 1440 540 Z"
+              fill="#fffaf0"
+            />
+          </g>
+
+          {/* Main mound */}
+          <path
+            d="M 0 540 L 0 344 C 110 296 250 278 370 296 C 450 186 620 106 810 106 C 1000 106 1150 196 1210 306 C 1290 278 1380 284 1440 306 L 1440 540 Z"
+            fill="url(#ft-main)"
+          />
+
+          {/* Light rolling ridge */}
+          <path
+            d="M 220 540 C 260 460 330 402 420 412 C 520 422 580 490 680 480 C 790 468 830 352 930 332 C 1030 314 1090 400 1160 440 C 1230 478 1300 486 1440 470 L 1440 540 Z"
+            fill="url(#ft-ridge)"
+            opacity="0.92"
+          />
+
+          {/* Right-side soft hill */}
+          <path
+            d="M 1080 540 C 1110 440 1170 352 1260 322 C 1330 300 1400 320 1440 350 L 1440 540 Z"
+            fill="url(#ft-deep)"
+            opacity="0.8"
+          />
+
+          {/* Bumpy foreground clouds */}
+          <path
+            d="M 0 540 L 0 470 C 30 430 90 420 130 445 C 160 405 230 400 265 440 C 300 420 350 430 370 470 C 390 490 400 520 400 540 Z"
+            fill="url(#ft-deep)"
+          />
+          <path
+            d="M 1040 540 C 1050 500 1090 480 1130 492 C 1150 450 1220 440 1255 475 C 1290 445 1360 450 1380 490 C 1410 480 1440 490 1440 500 L 1440 540 Z"
+            fill="url(#ft-deep)"
+            opacity="0.9"
+          />
+        </svg>
+
+        {/* Content */}
+        <div className="relative flex min-h-[480px] flex-col justify-end px-6 pb-8 pt-40 sm:min-h-[540px] sm:px-12 sm:pb-10 lg:px-20">
+          <div className="grid grid-cols-1 items-end gap-10 md:grid-cols-[1.1fr_1fr_1fr] md:gap-12 lg:gap-20">
+            {/* Social blob + brand */}
+            <div className="flex items-center gap-4">
+              <a
+                href="#"
+                aria-label="Aurelia on Instagram"
+                className="relative flex h-16 w-16 items-center justify-center bg-[#b98a3e] text-[#fffaf0] shadow-[0_10px_30px_-10px_rgba(160,115,45,0.5)] transition-transform duration-500 ease-out hover:-translate-y-1 hover:scale-105"
+                style={{ borderRadius: "58% 42% 50% 50% / 52% 48% 52% 48%" }}
+              >
+                <Instagram size={22} strokeWidth={1.8} />
+                <span className="absolute -right-3 -top-3 h-3.5 w-3.5 rounded-full bg-[#b98a3e]" />
+              </a>
+              <div>
+                <p className="text-[28px] font-light tracking-[-0.03em] text-[#4a3f30]">
+                  aurelia<sup className="ml-0.5 text-[10px]">®</sup>
+                </p>
+                <p className="text-[14px] text-[#6f6149]">Gentle care for every stage</p>
+              </div>
+            </div>
+
+            {/* Say hello */}
+            <div className="text-center md:text-left">
+              <p className="text-[12px] uppercase tracking-[0.28em] text-[#8d6a2a]">Say hello</p>
+              <a
+                href="mailto:hello@aurelia.example"
+                className="group relative mt-3 inline-block text-[clamp(21px,2.2vw,30px)] font-light tracking-[-0.025em] text-[#4a3f30] transition-colors duration-300 hover:text-[#8d6a2a]"
+              >
+                <span className="relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
+                  hello@aurelia.example
+                </span>
+              </a>
+              <p className="mt-2 text-[16px] leading-relaxed text-[#6f6149]">
+                We would love to hear from you.
+              </p>
+            </div>
+
+            {/* Grow with us */}
+            <div className="text-center md:text-left">
+              <p className="text-[12px] uppercase tracking-[0.28em] text-[#8d6a2a]">Grow with us</p>
+              <a
+                href="#home"
+                className="group relative mt-3 inline-block text-[clamp(21px,2.2vw,30px)] font-light tracking-[-0.025em] text-[#4a3f30] transition-colors duration-300 hover:text-[#8d6a2a]"
+              >
+                <span className="relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
+                  Join the waitlist
+                </span>
+              </a>
+              <p className="mt-2 text-[16px] leading-relaxed text-[#6f6149]">
+                A gentler beginning, together.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-[#8d6a2a]/20 pt-6 text-[13px] text-[#6f6149] sm:flex-row">
+            <p>© 2026 Aurelia. Made with care.</p>
+            <nav className="flex gap-6">
+              <a href="#" className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100">Privacy</a>
+              <a href="#" className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100">Terms</a>
+              <a href="#journey" className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100">Journey</a>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
+}
