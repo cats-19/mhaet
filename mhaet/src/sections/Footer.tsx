@@ -1,13 +1,14 @@
 import { Camera as Instagram } from "lucide-react";
 
 /**
- * Footer: a full-bleed, soft landscape of rounded hills in light honey tones,
- * matching the airy cream of the rest of the page, with contact details on top.
+ * Footer: a full-bleed, soft landscape of rounded hills in light honey tones
+ * (and quiet amber-bronze twilight hills in dark mode),
+ * matching the rest of the page, with contact details on top.
  * No outer frame or bottom gap: the landscape runs to the edges of the screen.
  */
 export function Footer() {
   return (
-    <footer id="contact" className="relative w-full overflow-hidden bg-[#f5ecdb]">
+    <footer id="contact" className="relative w-full overflow-hidden bg-[#f5ecdb] dark:bg-[#14100c]">
       <div className="relative min-h-[480px] w-full sm:min-h-[540px]">
         {/* Landscape */}
         <svg
@@ -18,16 +19,16 @@ export function Footer() {
         >
           <defs>
             <linearGradient id="ft-main" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#f0dcb0" />
-              <stop offset="100%" stopColor="#e4c48e" />
+              <stop offset="0%" style={{ stopColor: "var(--ft-main-0)" }} />
+              <stop offset="100%" style={{ stopColor: "var(--ft-main-1)" }} />
             </linearGradient>
             <linearGradient id="ft-ridge" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#fbf0d6" />
-              <stop offset="100%" stopColor="#eed7a6" />
+              <stop offset="0%" style={{ stopColor: "var(--ft-ridge-0)" }} />
+              <stop offset="100%" style={{ stopColor: "var(--ft-ridge-1)" }} />
             </linearGradient>
             <linearGradient id="ft-deep" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#e9cc96" />
-              <stop offset="100%" stopColor="#dcb87c" />
+              <stop offset="0%" style={{ stopColor: "var(--ft-deep-0)" }} />
+              <stop offset="100%" style={{ stopColor: "var(--ft-deep-1)" }} />
             </linearGradient>
             <filter id="ft-blur" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="20" />
@@ -35,10 +36,10 @@ export function Footer() {
           </defs>
 
           {/* Soft glowing halo behind the mound */}
-          <g filter="url(#ft-blur)" opacity="0.9">
+          <g filter="url(#ft-blur)" className="opacity-90 dark:opacity-30">
             <path
               d="M 0 540 L 0 320 C 120 270 260 250 380 268 C 470 160 640 84 820 84 C 1000 84 1150 170 1220 280 C 1300 252 1380 260 1440 280 L 1440 540 Z"
-              fill="#fffaf0"
+              className="fill-[#fffaf0] dark:fill-[#c99642]"
             />
           </g>
 
@@ -82,59 +83,80 @@ export function Footer() {
               <a
                 href="#"
                 aria-label="Aurelia on Instagram"
-                className="relative flex h-16 w-16 items-center justify-center bg-[#b98a3e] text-[#fffaf0] shadow-[0_10px_30px_-10px_rgba(160,115,45,0.5)] transition-transform duration-500 ease-out hover:-translate-y-1 hover:scale-105"
+                className="relative flex h-16 w-16 items-center justify-center bg-[#b98a3e] text-[#fffaf0] shadow-[0_10px_30px_-10px_rgba(160,115,45,0.5)] transition-transform duration-500 ease-out hover:-translate-y-1 hover:scale-105 dark:bg-[#e5be79] dark:text-[#231b12]"
                 style={{ borderRadius: "58% 42% 50% 50% / 52% 48% 52% 48%" }}
               >
                 <Instagram size={22} strokeWidth={1.8} />
-                <span className="absolute -right-3 -top-3 h-3.5 w-3.5 rounded-full bg-[#b98a3e]" />
+                <span className="absolute -right-3 -top-3 h-3.5 w-3.5 rounded-full bg-[#b98a3e] dark:bg-[#e5be79]" />
               </a>
               <div>
-                <p className="text-[28px] font-light tracking-[-0.03em] text-[#4a3f30]">
-                  aurelia<sup className="ml-0.5 text-[10px]">®</sup>
+                <p className="text-[28px] font-light tracking-[-0.03em] text-[#4a3f30] dark:text-[#f5ede0]">
+                  aurelia
                 </p>
-                <p className="text-[14px] text-[#6f6149]">Gentle care for every stage</p>
+                <p className="text-[14px] text-[#6f6149] dark:text-[#b9a88e]">
+                  Gentle care for every stage
+                </p>
               </div>
             </div>
 
             {/* Say hello */}
             <div className="text-center md:text-left">
-              <p className="text-[12px] uppercase tracking-[0.28em] text-[#8d6a2a]">Say hello</p>
+              <p className="text-[12px] uppercase tracking-[0.28em] text-[#8d6a2a] dark:text-[#dfb870]">
+                Say hello
+              </p>
               <a
                 href="mailto:hello@aurelia.example"
-                className="group relative mt-3 inline-block text-[clamp(21px,2.2vw,30px)] font-light tracking-[-0.025em] text-[#4a3f30] transition-colors duration-300 hover:text-[#8d6a2a]"
+                className="group relative mt-3 inline-block text-[clamp(21px,2.2vw,30px)] font-light tracking-[-0.025em] text-[#4a3f30] transition-colors duration-300 hover:text-[#8d6a2a] dark:text-[#f5ede0] dark:hover:text-[#e5be79]"
               >
                 <span className="relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
                   hello@aurelia.example
                 </span>
               </a>
-              <p className="mt-2 text-[16px] leading-relaxed text-[#6f6149]">
+              <p className="mt-2 text-[16px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                 We would love to hear from you.
               </p>
             </div>
 
             {/* Grow with us */}
             <div className="text-center md:text-left">
-              <p className="text-[12px] uppercase tracking-[0.28em] text-[#8d6a2a]">Grow with us</p>
+              <p className="text-[12px] uppercase tracking-[0.28em] text-[#8d6a2a] dark:text-[#dfb870]">
+                Grow with us
+              </p>
               <a
                 href="#home"
-                className="group relative mt-3 inline-block text-[clamp(21px,2.2vw,30px)] font-light tracking-[-0.025em] text-[#4a3f30] transition-colors duration-300 hover:text-[#8d6a2a]"
+                className="group relative mt-3 inline-block text-[clamp(21px,2.2vw,30px)] font-light tracking-[-0.025em] text-[#4a3f30] transition-colors duration-300 hover:text-[#8d6a2a] dark:text-[#f5ede0] dark:hover:text-[#e5be79]"
               >
                 <span className="relative after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover:after:scale-x-100 group-focus-visible:after:scale-x-100">
                   Join the waitlist
                 </span>
               </a>
-              <p className="mt-2 text-[16px] leading-relaxed text-[#6f6149]">
+              <p className="mt-2 text-[16px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                 A gentler beginning, together.
               </p>
             </div>
           </div>
 
-          <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-[#8d6a2a]/20 pt-6 text-[13px] text-[#6f6149] sm:flex-row">
+          <div className="mt-10 flex flex-col items-center justify-between gap-3 border-t border-[#8d6a2a]/20 pt-6 text-[13px] text-[#6f6149] sm:flex-row dark:border-[#e5be79]/18 dark:text-[#9c8b72]">
             <p>© 2026 Aurelia. Made with care.</p>
             <nav className="flex gap-6">
-              <a href="#" className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100">Privacy</a>
-              <a href="#" className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100">Terms</a>
-              <a href="#journey" className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100">Journey</a>
+              <a
+                href="#"
+                className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 dark:hover:text-[#f5ede0]"
+              >
+                Privacy
+              </a>
+              <a
+                href="#"
+                className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 dark:hover:text-[#f5ede0]"
+              >
+                Terms
+              </a>
+              <a
+                href="#journey"
+                className="group relative transition-colors hover:text-[#4a3f30] after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 hover:after:scale-x-100 dark:hover:text-[#f5ede0]"
+              >
+                Journey
+              </a>
             </nav>
           </div>
         </div>

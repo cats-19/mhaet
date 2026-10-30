@@ -24,6 +24,7 @@ export type OnboardingData = {
   hadStillbirth: boolean | null;
   malariaArea: boolean | null;
   complications: string[];
+  customComplications: string[];
   // Stage 4 — known medical conditions
   conditions: string[];
   customConditions: string[];
@@ -54,6 +55,7 @@ export const EMPTY_ONBOARDING: OnboardingData = {
   hadStillbirth: null,
   malariaArea: null,
   complications: [],
+  customComplications: [],
   conditions: [],
   customConditions: [],
   takesMedications: null,
@@ -88,7 +90,18 @@ export function loadOnboarding(): OnboardingData {
     const raw = localStorage.getItem(KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<OnboardingData>;
-      return { ...EMPTY_ONBOARDING, ...parsed };
+      return {
+        ...EMPTY_ONBOARDING,
+        ...parsed,
+        calendar:
+          parsed.calendar === "ethiopian" || parsed.calendar === "gregorian"
+            ? parsed.calendar
+            : "gregorian",
+        customComplications: Array.isArray(parsed.customComplications)
+          ? parsed.customComplications
+          : [],
+        customConditions: Array.isArray(parsed.customConditions) ? parsed.customConditions : [],
+      };
     }
   } catch {
     // Storage unavailable — use defaults.

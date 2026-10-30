@@ -1,12 +1,108 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Outfit", "Noto Sans Ethiopic", ui-sans-serif, system-ui, sans-serif;
 }
 
 html, body {
   font-family: var(--font-sans);
   background: #e9e3d8;
+  color: #3b3226;
+  color-scheme: light;
+  --ft-main-0: #f0dcb0;
+  --ft-main-1: #e4c48e;
+  --ft-ridge-0: #fbf0d6;
+  --ft-ridge-1: #eed7a6;
+  --ft-deep-0: #e9cc96;
+  --ft-deep-1: #dcb87c;
+}
+
+html.dark,
+html.dark body {
+  background: #15120e;
+  color: #f3eadb;
+  color-scheme: dark;
+  --ft-main-0: #2b2117;
+  --ft-main-1: #1d160f;
+  --ft-ridge-0: #382a1c;
+  --ft-ridge-1: #251c13;
+  --ft-deep-0: #241b12;
+  --ft-deep-1: #18120c;
+}
+
+/* ------------------------------------------------------------------ */
+/* View Transition + Golden Candlelight Aura Wave                      */
+/* ------------------------------------------------------------------ */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 9999;
+}
+
+/* Freeze element transitions while View Transition captures the new state
+   so the circular iris reveals the crisp final colors with zero lag. */
+html[data-theme-vt="active"] *,
+html[data-theme-vt="active"] *::before,
+html[data-theme-vt="active"] *::after {
+  transition-duration: 0s !important;
+}
+
+/* Fallback smooth color interpolation when startViewTransition is absent */
+html.theme-smooth-transition,
+html.theme-smooth-transition body,
+html.theme-smooth-transition *,
+html.theme-smooth-transition *::before,
+html.theme-smooth-transition *::after {
+  transition:
+    background-color 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    background 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 520ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 680ms cubic-bezier(0.22, 1, 0.36, 1),
+    fill 560ms cubic-bezier(0.22, 1, 0.36, 1),
+    stroke 560ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+
+.theme-aura-wave {
+  position: fixed;
+  pointer-events: none;
+  z-index: 2147483647;
+  border-radius: 50%;
+  will-change: transform, opacity;
+  filter: blur(2px);
+}
+
+.theme-aura-wave.is-to-dark {
+  background: radial-gradient(
+    circle,
+    transparent 60%,
+    rgba(229, 190, 121, 0.14) 66%,
+    rgba(251, 231, 184, 0.52) 69.4%,
+    rgba(196, 144, 64, 0.24) 71.2%,
+    transparent 74.5%
+  );
+}
+
+.theme-aura-wave.is-to-light {
+  background: radial-gradient(
+    circle,
+    transparent 60%,
+    rgba(255, 246, 224, 0.2) 66%,
+    rgba(255, 251, 238, 0.68) 69.4%,
+    rgba(217, 171, 94, 0.28) 71.2%,
+    transparent 74.5%
+  );
 }
 
 @keyframes float-a {
@@ -41,6 +137,14 @@ html, body {
   background-clip: text;
   color: transparent;
   animation: shimmer 6s linear infinite;
+}
+
+.dark .gold-shimmer {
+  background: linear-gradient(100deg, #fff6e5 20%, #e5be79 42%, #fff6e5 64%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 @keyframes ripple-wave {
@@ -103,7 +207,44 @@ html, body {
   backdrop-filter: blur(24px) saturate(135%);
 }
 
+.dark .home-glass {
+  background: linear-gradient(145deg, rgba(38, 31, 23, 0.82), rgba(26, 21, 16, 0.68));
+  border: 1px solid rgba(229, 190, 121, 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 242, 214, 0.07),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+    0 22px 46px -26px rgba(0, 0, 0, 0.78);
+}
+
 /* Action cards: mostly opaque so they stand out clearly from the background. */
+/* Warm gold-tinted glass for sheets and pop-ups: the same frosted blur as
+   .home-glass, but tinted cream and honey so it never reads grey. */
+.home-glass-warm {
+  background:
+    radial-gradient(circle at 84% 4%, rgba(251, 231, 184, 0.62), transparent 46%),
+    linear-gradient(155deg, rgba(255, 253, 246, 0.9), rgba(248, 234, 208, 0.76));
+  border: 1px solid rgba(255, 246, 228, 0.95);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.96),
+    inset 0 -1px 0 rgba(185, 138, 62, 0.18),
+    0 26px 60px -30px rgba(112, 78, 28, 0.58);
+  -webkit-backdrop-filter: blur(30px) saturate(158%);
+  backdrop-filter: blur(30px) saturate(158%);
+}
+
+.dark .home-glass-warm {
+  background:
+    radial-gradient(circle at 84% 4%, rgba(229, 190, 121, 0.2), transparent 48%),
+    linear-gradient(155deg, rgba(56, 43, 29, 0.9), rgba(32, 25, 18, 0.84));
+  border: 1px solid rgba(229, 190, 121, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 242, 214, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 26px 60px -26px rgba(0, 0, 0, 0.9);
+  -webkit-backdrop-filter: blur(30px) saturate(145%);
+  backdrop-filter: blur(30px) saturate(145%);
+}
+
 .home-card-solid {
   background: linear-gradient(160deg, rgba(255, 255, 255, 0.97), rgba(255, 251, 243, 0.94));
   border: 1px solid rgba(201, 163, 93, 0.38);
@@ -113,6 +254,15 @@ html, body {
     0 2px 6px -2px rgba(112, 78, 28, 0.12);
 }
 
+.dark .home-card-solid {
+  background: linear-gradient(160deg, rgba(44, 36, 27, 0.96), rgba(31, 25, 19, 0.94));
+  border: 1px solid rgba(217, 171, 94, 0.28);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 242, 214, 0.08),
+    0 16px 34px -18px rgba(0, 0, 0, 0.8),
+    0 2px 8px -2px rgba(0, 0, 0, 0.45);
+}
+
 /* Small round controls: solid surface so the icons read clearly. */
 .home-icon-solid {
   background: linear-gradient(160deg, #ffffff, #fffbf3);
@@ -120,6 +270,14 @@ html, body {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 1),
     0 8px 18px -10px rgba(112, 78, 28, 0.45);
+}
+
+.dark .home-icon-solid {
+  background: linear-gradient(160deg, #2f261c, #231c15);
+  border: 1px solid rgba(217, 171, 94, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 242, 214, 0.09),
+    0 10px 22px -10px rgba(0, 0, 0, 0.75);
 }
 
 .home-glass-gold {
@@ -135,6 +293,17 @@ html, body {
   backdrop-filter: blur(26px) saturate(130%);
 }
 
+.dark .home-glass-gold {
+  background:
+    radial-gradient(circle at 84% 10%, rgba(251, 224, 168, 0.16), transparent 42%),
+    linear-gradient(145deg, rgba(88, 63, 27, 0.64), rgba(50, 36, 17, 0.78));
+  border: 1px solid rgba(233, 189, 120, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 242, 210, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+    0 22px 48px -26px rgba(0, 0, 0, 0.82);
+}
+
 /* Danger variant of the summary card — a muted terracotta that sits with the gold theme. */
 .report-danger-card {
   background:
@@ -147,6 +316,17 @@ html, body {
     0 20px 44px -28px rgba(156, 58, 41, 0.55);
   -webkit-backdrop-filter: blur(26px) saturate(125%);
   backdrop-filter: blur(26px) saturate(125%);
+}
+
+.dark .report-danger-card {
+  background:
+    radial-gradient(circle at 84% 10%, rgba(240, 139, 117, 0.18), transparent 42%),
+    linear-gradient(145deg, rgba(88, 32, 24, 0.8), rgba(52, 20, 15, 0.88));
+  border: 1px solid rgba(228, 114, 92, 0.45);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 220, 210, 0.12),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+    0 22px 48px -26px rgba(0, 0, 0, 0.85);
 }
 
 /* Frost panel: frozen glass layer that softens edges and shows through page edges */
@@ -172,27 +352,39 @@ html, body {
 }
 
 /* The bottom pill only turns translucent while it is physically over a card. */
-.home-nav-clear {
-  background: rgba(255, 253, 248, 0.97);
-  border: 1px solid rgba(240, 227, 201, 0.95);
-  -webkit-backdrop-filter: blur(18px) saturate(120%);
-  backdrop-filter: blur(18px) saturate(120%);
+/* Neutral frosted glass: a clear pane of blur with no theme gradient, so the
+   warm page colours show through instead of being tinted. Two densities —
+   the transparent variant is used once the pill floats over content. */
+.home-nav-clear,
+.home-nav-overlap {
+  --nav-glass-tint: rgba(255, 255, 255, 0.52);
+  background: var(--nav-glass-tint);
+  border: 1px solid rgba(255, 255, 255, 0.68);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 18px 40px -20px rgba(58, 46, 30, 0.3);
+  -webkit-backdrop-filter: blur(34px) saturate(140%);
+  backdrop-filter: blur(34px) saturate(140%);
 }
 
 .home-nav-overlap {
-  background: rgba(255, 253, 248, 0.62);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.78),
-    0 18px 40px -16px rgba(120, 85, 30, 0.38);
-  -webkit-backdrop-filter: blur(22px) saturate(125%);
-  backdrop-filter: blur(22px) saturate(125%);
+  --nav-glass-tint: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
-/* ------------------------------------------------------------------ */
-/* Voice orb: a soft gradient sphere with colour masses drifting       */
-/* inside it. Pure CSS, so it stays light on the phone.                */
-/* ------------------------------------------------------------------ */
+.dark .home-nav-clear,
+.dark .home-nav-overlap {
+  --nav-glass-tint: rgba(30, 28, 26, 0.56);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+    0 18px 40px -18px rgba(0, 0, 0, 0.85);
+}
+
+.dark .home-nav-overlap {
+  --nav-glass-tint: rgba(30, 28, 26, 0.46);
+}
 
 /* ------------------------------------------------------------------ */
 /* Voice orb: several soft translucent gold discs, each offset from    */
@@ -222,6 +414,15 @@ html, body {
   filter: blur(30px);
   animation: orb-bloom 9s ease-in-out infinite;
   z-index: 0;
+}
+
+.dark .voice-orb__bloom {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(229, 180, 102, 0.34),
+    rgba(185, 130, 52, 0.16) 46%,
+    transparent 70%
+  );
 }
 
 /* Wrapper: spins around the centre of the orb, carrying its disc with it */
@@ -257,6 +458,17 @@ html, body {
   );
   filter: blur(5px);
   transform: translate(-50%, -50%) translateX(7%);
+}
+
+.dark .voice-orb__disc {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(233, 189, 120, 0) 36%,
+    rgba(233, 189, 120, 0.16) 52%,
+    rgba(217, 165, 84, 0.28) 72%,
+    rgba(233, 189, 120, 0.09) 90%,
+    rgba(233, 189, 120, 0) 100%
+  );
 }
 
 /* Each disc gets its own size, offset, tint and timing, so the pattern
@@ -357,6 +569,16 @@ html, body {
   z-index: 2;
 }
 
+.dark .voice-orb__core {
+  background: radial-gradient(
+    circle at 50% 48%,
+    rgba(255, 245, 220, 0.92),
+    rgba(235, 193, 118, 0.55) 45%,
+    rgba(185, 130, 52, 0.2) 72%,
+    rgba(185, 130, 52, 0) 100%
+  );
+}
+
 /* Danger state: red-tinted discs and a warm warning centre. */
 .voice-orb.is-danger .voice-orb__bloom {
   background: radial-gradient(
@@ -366,6 +588,15 @@ html, body {
     transparent 68%
   );
   animation-duration: 5.5s;
+}
+
+.dark .voice-orb.is-danger .voice-orb__bloom {
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(224, 104, 80, 0.38),
+    rgba(140, 48, 33, 0.22) 46%,
+    transparent 70%
+  );
 }
 
 .voice-orb.is-danger .voice-orb__disc {
@@ -386,6 +617,16 @@ html, body {
     rgba(198, 90, 69, 0) 100%
   );
   animation-duration: 5.5s;
+}
+
+.dark .voice-orb.is-danger .voice-orb__core {
+  background: radial-gradient(
+    circle at 50% 48%,
+    rgba(255, 226, 216, 0.9),
+    rgba(218, 102, 80, 0.52) 45%,
+    rgba(156, 58, 41, 0.22) 72%,
+    rgba(156, 58, 41, 0) 100%
+  );
 }
 
 .voice-orb.is-danger .voice-orb__petal {
@@ -617,37 +858,38 @@ html, body {
   50% { transform: scale(1.45); opacity: 0; }
 }
 
-/* Concentric rings expanding outward from the icon. */
+/* Soft, hairline whisper ripple around the danger badge. */
 .danger-ring {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 2px solid rgba(198, 90, 69, 0.45);
-  animation: danger-ring-ripple 2s ease-out infinite;
+  border: 1px solid rgba(198, 90, 69, 0.28);
+  animation: danger-ring-ripple 3.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
   pointer-events: none;
 }
 
+.dark .danger-ring {
+  border-color: rgba(240, 139, 117, 0.3);
+}
+
 @keyframes danger-ring-ripple {
-  0% { transform: scale(1); opacity: 0.6; }
-  100% { transform: scale(1.75); opacity: 0; }
+  0% { transform: scale(0.98); opacity: 0.48; }
+  100% { transform: scale(1.42); opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .danger-alert-in { animation: none; }
 }
 
-/* Danger icon heartbeat: a double-thump like a quickening pulse. */
-@keyframes danger-beat {
+/* Calm, slow breathing cadence instead of a heavy double-heartbeat. */
+@keyframes danger-calm-breathe {
   0%, 100% { transform: scale(1); }
-  10% { transform: scale(1.14); }
-  20% { transform: scale(1); }
-  30% { transform: scale(1.14); }
-  45% { transform: scale(1); }
+  50% { transform: scale(1.035); }
 }
-.danger-beat {
-  animation: danger-beat 1.8s ease-in-out infinite;
+.danger-calm-breathe {
+  animation: danger-calm-breathe 4.2s ease-in-out infinite;
   transform-origin: center;
 }
 
@@ -678,7 +920,7 @@ html, body {
 
 @media (prefers-reduced-motion: reduce) {
   .splash-breathe, .splash-progress, .splash-msg,
-  .danger-beat, .danger-ring, .danger-halo {
+  .danger-calm-breathe, .danger-ring, .danger-halo {
     animation: none;
   }
 }
@@ -691,6 +933,12 @@ html, body {
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.4s linear infinite;
 }
+
+.dark .skeleton-line {
+  background: linear-gradient(100deg, #2b231a 30%, #433626 50%, #2b231a 70%);
+  background-size: 200% 100%;
+}
+
 @keyframes skeleton-shimmer {
   from { background-position: 200% 0; }
   to { background-position: -200% 0; }
@@ -727,6 +975,17 @@ html, body {
   );
   cursor: pointer;
 }
+
+.dark .severity-slider {
+  background: linear-gradient(
+    to right,
+    #c9a35d 0%,
+    #e9bd78 var(--fill, 50%),
+    #382e22 var(--fill, 50%),
+    #382e22 100%
+  );
+}
+
 .severity-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -737,6 +996,13 @@ html, body {
   border: 2px solid #b98a3e;
   box-shadow: 0 3px 10px rgba(120, 85, 30, 0.35);
 }
+
+.dark .severity-slider::-webkit-slider-thumb {
+  background: #231c15;
+  border: 2px solid #e5be79;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65);
+}
+
 .severity-slider::-moz-range-thumb {
   width: 22px;
   height: 22px;
@@ -745,6 +1011,13 @@ html, body {
   border: 2px solid #b98a3e;
   box-shadow: 0 3px 10px rgba(120, 85, 30, 0.35);
 }
+
+.dark .severity-slider::-moz-range-thumb {
+  background: #231c15;
+  border: 2px solid #e5be79;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.65);
+}
+
 .severity-slider:disabled {
   cursor: not-allowed;
   opacity: 0.6;
@@ -768,4 +1041,15 @@ html, body {
     0 20px 42px -24px rgba(117, 75, 23, 0.55);
   -webkit-backdrop-filter: blur(26px) saturate(130%);
   backdrop-filter: blur(26px) saturate(130%);
+}
+
+.dark .home-glass-bronze {
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 230, 180, 0.15), transparent 42%),
+    linear-gradient(145deg, rgba(118, 82, 34, 0.66), rgba(66, 45, 18, 0.78));
+  border: 1px solid rgba(235, 195, 128, 0.3);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 242, 210, 0.14),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.35),
+    0 22px 46px -24px rgba(0, 0, 0, 0.82);
 }
