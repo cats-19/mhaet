@@ -1,5 +1,4 @@
 import type { CSSProperties } from "react";
-import { AlertTriangle } from "lucide-react";
 import {
   CALENDAR_CELLS,
   FOOD_GROUPS,
@@ -34,7 +33,7 @@ export function SeverityCalendar({
         {weekdays.map((d, i) => (
           <span
             key={i}
-            className="text-center text-[10.5px] font-medium tracking-wide text-[#a2937a]"
+            className="text-center text-[10.5px] font-medium tracking-wide text-[#a2937a] dark:text-[#9c8b72]"
           >
             {d}
           </span>
@@ -79,24 +78,27 @@ export function SeverityCalendar({
               aria-pressed={selected}
               aria-controls={detailsId}
               title={`${dateLabel}: ${description}`}
-              className={`report-severity-cell ${inView ? "is-visible" : "is-pending"} relative flex aspect-square min-h-10 w-full cursor-pointer items-center justify-center rounded-[9px] border text-[12px] font-semibold tabular-nums transition-[box-shadow,transform] duration-200 hover:ring-1 hover:ring-[#6f4b1d] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4a3f30] motion-reduce:transition-none ${
+              className={`report-severity-cell ${inView ? "is-visible" : "is-pending"} relative flex aspect-square min-h-10 w-full cursor-pointer items-center justify-center rounded-[9px] border text-[12px] font-semibold tabular-nums transition-[box-shadow,transform] duration-200 hover:ring-1 hover:ring-[#6f4b1d] dark:hover:ring-[#e5be79] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4a3f30] dark:focus-visible:outline-[#e5be79] motion-reduce:transition-none ${
                 !day.recorded
-                  ? "border-dashed border-[#b5a07c] text-[#6f6149]"
+                  ? "border-dashed border-[#b5a07c] text-[#6f6149] dark:border-[#66543f] dark:text-[#9c8b72]"
                   : isDanger
                     ? "border-[#883022] text-[#fff7f2]"
                     : severity
                       ? "border-transparent text-[#2e2519]"
-                      : "border-[#e2d3b4] bg-[#faf5eb] text-[#4a3f30]"
+                      : "border-[#e2d3b4] bg-[#faf5eb] text-[#4a3f30] dark:border-[#3d3123] dark:bg-[#19140f] dark:text-[#dfcfb6]"
               } ${
-                selected ? "ring-2 ring-[#6f4b1d] ring-offset-2 ring-offset-[#fbf6ec]" : ""
+                selected
+                  ? "ring-2 ring-[#6f4b1d] ring-offset-2 ring-offset-[#fbf6ec] dark:ring-[#e5be79] dark:ring-offset-[#221c15]"
+                  : ""
               }`}
               style={cellStyle as CSSProperties}
             >
               <span>{day.day}</span>
               {isDanger && (
-                <span className="absolute right-0.5 top-0.5 flex h-[15px] w-[15px] items-center justify-center rounded-full bg-[#fff7f2] text-[#8f3021] shadow-sm">
-                  <AlertTriangle size={10} strokeWidth={2.5} aria-hidden="true" />
-                </span>
+                <span
+                  aria-hidden="true"
+                  className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-[#fff7f2] shadow-sm"
+                />
               )}
             </button>
           );
@@ -134,8 +136,10 @@ function SymptomBarRow({
         transitionDelay: `${index * 70}ms`,
       }}
     >
-      <span className="w-[74px] shrink-0 text-[13px] text-[#4a3f30]">{row.name}</span>
-      <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-[#ecdfc5]">
+      <span className="w-[74px] shrink-0 text-[13px] text-[#4a3f30] dark:text-[#dfcfb6]">
+        {row.name}
+      </span>
+      <span className="h-2.5 flex-1 overflow-hidden rounded-full bg-[#ecdfc5] dark:bg-[#31271c]">
         <span
           className="block h-full rounded-full bg-gradient-to-r from-[#d9ab5e] to-[#b98a3e] transition-[width] duration-700 ease-out motion-reduce:transition-none"
           style={{
@@ -144,7 +148,7 @@ function SymptomBarRow({
           }}
         />
       </span>
-      <span className="w-[46px] shrink-0 text-right text-[12px] text-[#85735a]">
+      <span className="w-[46px] shrink-0 text-right text-[12px] text-[#85735a] dark:text-[#9c8b72]">
         <span className="sr-only">{row.count} days</span>
         <span aria-hidden="true">{animatedCount}d</span>
       </span>
@@ -180,22 +184,20 @@ export function FoodGroupBars() {
       {MONTH.map((day) => (
         <div key={day.day} className="flex flex-1 flex-col justify-end gap-[2px]">
           {day.recorded ? (
-            [...day.foodGroups]
-              .reverse()
-              .map((group) => (
-                <span
-                  key={group}
-                  className="block w-full rounded-[2px]"
-                  style={{
-                    height: `${(BAR_HEIGHT - 4) / 5}px`,
-                    background: FOOD_GROUPS[group].color,
-                  }}
-                  title={`Sept ${day.day}: ${FOOD_GROUPS[group].name}`}
-                />
-              ))
+            [...day.foodGroups].reverse().map((group) => (
+              <span
+                key={group}
+                className="block w-full rounded-[2px]"
+                style={{
+                  height: `${(BAR_HEIGHT - 4) / 5}px`,
+                  background: FOOD_GROUPS[group].color,
+                }}
+                title={`Sept ${day.day}: ${FOOD_GROUPS[group].name}`}
+              />
+            ))
           ) : (
             <span
-              className="block w-full rounded-[2px] border border-dashed border-[#cdbb9a]"
+              className="block w-full rounded-[2px] border border-dashed border-[#cdbb9a] dark:border-[#66543f]"
               style={{ height: 6 }}
             />
           )}

@@ -10,10 +10,13 @@ import {
   MapPin,
   Mic,
   Minus,
+  Pill,
   Plus,
-  Ruler,
   X,
 } from "lucide-react";
+import { BrandMark } from "../components/BrandMark";
+import { ThemeSelect } from "../components/ThemeSelect";
+import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import {
   COMPLICATION_OPTIONS,
   CONDITION_OPTIONS,
@@ -71,10 +74,15 @@ function NumberStepper({
     <div className="py-2.5">
       <div className="flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <label htmlFor={id} className="block text-[15px] font-medium text-[#3b3226]">
+          <label
+            htmlFor={id}
+            className="block text-[15px] font-medium text-[#3b3226] dark:text-[#f5ede0]"
+          >
             {label}
           </label>
-          {hint && <p className="mt-0.5 text-[12.5px] text-[#85735a]">{hint}</p>}
+          {hint && (
+            <p className="mt-0.5 text-[12.5px] text-[#85735a] dark:text-[#9c8b72]">{hint}</p>
+          )}
         </div>
         <div className="flex shrink-0 items-center gap-3">
           <button
@@ -82,11 +90,11 @@ function NumberStepper({
             onClick={() => onChange(clamp(value - 1))}
             disabled={value <= min}
             aria-label={`Decrease ${label.toLowerCase()}`}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d8c6a4] bg-white/85 text-[#6f5a35] transition enabled:hover:bg-[#fbe7b8] disabled:opacity-40"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d8c6a4] bg-white/85 text-[#6f5a35] transition enabled:hover:bg-[#fbe7b8] disabled:opacity-40 dark:border-[#4a3c2c] dark:bg-[#231c15] dark:text-[#e5be79] dark:enabled:hover:bg-[#2f251b]"
           >
             <Minus size={16} strokeWidth={2.2} />
           </button>
-          <span className="min-w-[1.75rem] text-center text-[22px] font-medium tabular-nums text-[#3b3226]">
+          <span className="min-w-[1.75rem] text-center text-[22px] font-medium tabular-nums text-[#3b3226] dark:text-[#f5ede0]">
             {value}
           </span>
           <input id={id} type="hidden" value={value} />
@@ -95,7 +103,7 @@ function NumberStepper({
             onClick={() => onChange(clamp(value + 1))}
             disabled={value >= max}
             aria-label={`Increase ${label.toLowerCase()}`}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d8c6a4] bg-white/85 text-[#6f5a35] transition enabled:hover:bg-[#fbe7b8] disabled:opacity-40"
+            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#d8c6a4] bg-white/85 text-[#6f5a35] transition enabled:hover:bg-[#fbe7b8] disabled:opacity-40 dark:border-[#4a3c2c] dark:bg-[#231c15] dark:text-[#e5be79] dark:enabled:hover:bg-[#2f251b]"
           >
             <Plus size={16} strokeWidth={2.2} />
           </button>
@@ -122,11 +130,11 @@ function SegmentedSwitch<T extends string>({
     <div
       role="group"
       aria-label={label}
-      className="relative flex rounded-full border border-[#d8c6a4]/80 bg-[#e7dcc7]/60 p-1 backdrop-blur-md"
+      className="relative flex rounded-full border border-[#d8c6a4]/80 bg-[#e7dcc7]/60 p-1 backdrop-blur-md dark:border-[#46392a] dark:bg-[#1e1812]/85"
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-1 top-1 rounded-full bg-[#4a3f30] shadow-sm transition-all duration-300 ease-out"
+        className="pointer-events-none absolute bottom-1 top-1 rounded-full bg-[#4a3f30] shadow-sm transition-all duration-300 ease-out dark:bg-[#e5be79]"
         style={{
           width: `calc(${100 / options.length}% - 4px)`,
           left: `calc(${(safeIndex * 100) / options.length}% + 2px)`,
@@ -139,7 +147,9 @@ function SegmentedSwitch<T extends string>({
           aria-pressed={value === option.value}
           onClick={() => onChange(option.value)}
           className={`relative z-10 min-h-11 flex-1 rounded-full px-3 text-[13.5px] font-medium transition-colors duration-200 ${
-            value === option.value ? "text-[#fffaf0]" : "text-[#6f6149] hover:text-[#3b3226]"
+            value === option.value
+              ? "text-[#fffaf0] dark:text-[#231b12]"
+              : "text-[#6f6149] hover:text-[#3b3226] dark:text-[#b9a88e] dark:hover:text-[#f5ede0]"
           }`}
         >
           {option.label}
@@ -167,7 +177,12 @@ function YesNoQuestion({
 }) {
   return (
     <div>
-      <p id={id} className={hideLabel ? "sr-only" : "text-[15px] font-medium text-[#3b3226]"}>
+      <p
+        id={id}
+        className={
+          hideLabel ? "sr-only" : "text-[15px] font-medium text-[#3b3226] dark:text-[#f5ede0]"
+        }
+      >
         {question}
       </p>
       <div className="mt-2.5 grid grid-cols-2 gap-2.5" role="group" aria-labelledby={id}>
@@ -184,8 +199,8 @@ function YesNoQuestion({
               onClick={() => onChange(option.value)}
               className={`flex min-h-12 items-center justify-center gap-2 rounded-2xl border text-[14.5px] font-medium transition-all duration-200 ${
                 active
-                  ? "border-[#4a3f30] bg-[#4a3f30] text-[#fffaf0] shadow-[0_8px_20px_-10px_rgba(60,45,25,0.6)]"
-                  : "border-[#d8c6a4] bg-white/80 text-[#6f6149] hover:border-[#c9a35d] hover:bg-white"
+                  ? "border-[#4a3f30] bg-[#4a3f30] text-[#fffaf0] shadow-[0_8px_20px_-10px_rgba(60,45,25,0.6)] dark:border-[#e5be79] dark:bg-[#e5be79] dark:text-[#231b12]"
+                  : "border-[#d8c6a4] bg-white/80 text-[#6f6149] hover:border-[#c9a35d] hover:bg-white dark:border-[#4a3c2c] dark:bg-[#231c15]/85 dark:text-[#c7b69c] dark:hover:border-[#e5be79]/55 dark:hover:bg-[#2c231a]"
               }`}
             >
               {active && <Check size={15} strokeWidth={2.5} aria-hidden="true" />}
@@ -195,7 +210,7 @@ function YesNoQuestion({
         })}
       </div>
       {error && (
-        <p role="alert" className="mt-1.5 text-[12px] text-[#9c3a29]">
+        <p role="alert" className="mt-1.5 text-[12px] text-[#9c3a29] dark:text-[#f08b75]">
           {error}
         </p>
       )}
@@ -220,15 +235,17 @@ function ChoiceRow({
       onClick={onToggle}
       className={`flex min-h-12 w-full items-center justify-between gap-3 rounded-2xl border px-4 py-3 text-left transition-all duration-200 ${
         selected
-          ? "border-[#c9a35d] bg-[#fbe7b8]/70 shadow-[0_6px_16px_-10px_rgba(160,120,50,0.5)]"
-          : "border-[#d8c6a4] bg-white/70 hover:border-[#c9a35d]/70 hover:bg-white"
+          ? "border-[#c9a35d] bg-[#fbe7b8]/70 shadow-[0_6px_16px_-10px_rgba(160,120,50,0.5)] dark:border-[#e5be79] dark:bg-[#e5be79]/18"
+          : "border-[#d8c6a4] bg-white/70 hover:border-[#c9a35d]/70 hover:bg-white dark:border-[#3d3123] dark:bg-[#221c15]/80 dark:hover:border-[#e5be79]/45 dark:hover:bg-[#2a221a]"
       }`}
     >
-      <span className="text-[14px] font-medium text-[#3b3226]">{label}</span>
+      <span className="text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">{label}</span>
       <span
         aria-hidden="true"
         className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition-all duration-200 ${
-          selected ? "border-[#4a3f30] bg-[#4a3f30] text-[#fbe7b8]" : "border-[#c9b489]"
+          selected
+            ? "border-[#4a3f30] bg-[#4a3f30] text-[#fbe7b8] dark:border-[#e5be79] dark:bg-[#e5be79] dark:text-[#231b12]"
+            : "border-[#c9b489] dark:border-[#574734]"
         }`}
       >
         {selected && <Check size={13} strokeWidth={3} />}
@@ -262,7 +279,10 @@ function AddField({
         onAdd();
       }}
     >
-      <label htmlFor={id} className="block text-[13px] font-medium text-[#4a3f30]">
+      <label
+        htmlFor={id}
+        className="block text-[13px] font-medium text-[#4a3f30] dark:text-[#dfcfb6]"
+      >
         {label}
       </label>
       <div className="mt-2 flex gap-2">
@@ -273,12 +293,12 @@ function AddField({
           onChange={(event) => onChange(event.target.value)}
           placeholder={placeholder}
           maxLength={60}
-          className="min-h-12 min-w-0 flex-1 rounded-2xl border border-[#d8c6a4] bg-white/85 px-4 py-3 text-[14.5px] text-[#3b3226] outline-none transition-colors placeholder:text-[#a99b84] focus:border-[#a87a3d] focus:bg-white"
+          className="min-h-12 min-w-0 flex-1 rounded-2xl border border-[#d8c6a4] bg-white/85 px-4 py-3 text-[14.5px] text-[#3b3226] outline-none transition-colors placeholder:text-[#a99b84] focus:border-[#a87a3d] focus:bg-white dark:border-[#4a3c2c] dark:bg-[#221c15]/85 dark:text-[#f5ede0] dark:placeholder:text-[#7d6e58] dark:focus:border-[#e5be79] dark:focus:bg-[#282018]"
         />
         <button
           type="submit"
           disabled={!value.trim()}
-          className="flex min-h-12 shrink-0 items-center gap-1.5 rounded-full bg-[#4a3f30] px-5 text-[14px] font-medium text-[#fffaf0] transition enabled:hover:bg-[#655039] enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40"
+          className="flex min-h-12 shrink-0 items-center gap-1.5 rounded-full bg-[#4a3f30] px-5 text-[14px] font-medium text-[#fffaf0] transition enabled:hover:bg-[#655039] enabled:active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-40 dark:bg-[#e5be79] dark:text-[#231b12] dark:enabled:hover:bg-[#f0cf92]"
         >
           <Plus size={15} strokeWidth={2.4} aria-hidden="true" />
           {addLabel}
@@ -305,7 +325,10 @@ function DateSelect({
 }) {
   return (
     <div className="min-w-0">
-      <label htmlFor={id} className="block text-[12px] font-medium text-[#6f6149]">
+      <label
+        htmlFor={id}
+        className="block text-[12px] font-medium text-[#6f6149] dark:text-[#b9a88e]"
+      >
         {label}
       </label>
       <select
@@ -313,9 +336,11 @@ function DateSelect({
         value={value}
         onChange={(event) => onChange(event.target.value)}
         aria-invalid={Boolean(error)}
-        className={`mt-1.5 min-h-12 w-full appearance-none rounded-2xl border bg-white/90 px-3 py-2.5 text-[14px] text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] ${
-          error ? "border-[#9c3a29]/70" : "border-[#d8c6a4]"
-        } ${value ? "" : "text-[#a99b84]"}`}
+        className={`mt-1.5 min-h-12 w-full appearance-none rounded-2xl border bg-white/90 px-3 py-2.5 text-[14px] text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] dark:bg-[#221c15]/85 dark:text-[#f5ede0] dark:focus:border-[#e5be79] ${
+          error
+            ? "border-[#9c3a29]/70 dark:border-[#e4725c]/70"
+            : "border-[#d8c6a4] dark:border-[#4a3c2c]"
+        } ${value ? "" : "text-[#a99b84] dark:text-[#7d6e58]"}`}
       >
         <option value="">Select</option>
         {options.map((option) => (
@@ -340,7 +365,7 @@ function MicRings() {
         <span
           key={ring}
           aria-hidden="true"
-          className="absolute rounded-full border border-[#c9a35d]/45"
+          className="absolute rounded-full border border-[#c9a35d]/45 dark:border-[#e5be79]/35"
           style={{
             inset: `${ring * 34}px`,
             animation: `mic-ring ${3 + ring}s cubic-bezier(0.25, 0.9, 0.3, 1) ${ring * 0.7}s infinite`,
@@ -349,9 +374,9 @@ function MicRings() {
       ))}
       <span
         aria-hidden="true"
-        className="absolute inset-[46px] rounded-full bg-[#fbe7b8] blur-3xl opacity-70"
+        className="absolute inset-[46px] rounded-full bg-[#fbe7b8] opacity-70 blur-3xl dark:bg-[#c99642] dark:opacity-25"
       />
-      <span className="relative flex h-[128px] w-[128px] items-center justify-center rounded-full bg-gradient-to-br from-[#3b3226] to-[#4a3f30] text-[#fbe7b8] shadow-[0_22px_50px_-18px_rgba(60,45,25,0.75)]">
+      <span className="relative flex h-[128px] w-[128px] items-center justify-center rounded-full bg-gradient-to-br from-[#3b3226] to-[#4a3f30] text-[#fbe7b8] shadow-[0_22px_50px_-18px_rgba(60,45,25,0.75)] dark:from-[#efd093] dark:to-[#c99642] dark:text-[#231b12] dark:shadow-[0_22px_50px_-18px_rgba(229,190,121,0.45)]">
         <Mic size={44} strokeWidth={1.8} aria-hidden="true" />
       </span>
     </div>
@@ -366,7 +391,7 @@ function MicWaveform() {
       {heights.map((height, index) => (
         <span
           key={index}
-          className="w-1.5 rounded-full bg-gradient-to-b from-[#e9bd78] to-[#b98a3e] mic-wave-bar"
+          className="mic-wave-bar w-1.5 rounded-full bg-gradient-to-b from-[#e9bd78] to-[#b98a3e]"
           style={{
             height,
             animationDelay: `${index * 0.09}s`,
@@ -386,17 +411,17 @@ function OnboardingComplete({ onDone }: { onDone: () => void }) {
 
   return (
     <div className="rise flex flex-col items-center justify-center text-center" role="status">
-      <span className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#3b3226] to-[#4a3f30] text-[#fbe7b8] shadow-[0_24px_55px_-18px_rgba(60,45,25,0.75)]">
+      <span className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#3b3226] to-[#4a3f30] text-[#fbe7b8] shadow-[0_24px_55px_-18px_rgba(60,45,25,0.75)] dark:from-[#efd093] dark:to-[#c99642] dark:text-[#231b12]">
         <Check size={46} strokeWidth={2.2} aria-hidden="true" />
         <span
           aria-hidden="true"
           className="absolute inset-0 animate-ping rounded-full bg-[#d9ab5e]/30"
         />
       </span>
-      <h2 className="mt-7 text-[28px] font-light leading-[1.2] tracking-[-0.03em] text-[#3b3226]">
+      <h2 className="mt-7 text-[28px] font-light leading-[1.2] tracking-[-0.03em] text-[#3b3226] dark:text-[#f5ede0]">
         Your care is set up
       </h2>
-      <p className="mt-3 max-w-[30ch] text-[14.5px] leading-relaxed text-[#6f6149]">
+      <p className="mt-3 max-w-[30ch] text-[14.5px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
         Aurelia is ready to follow your journey, day by day.
       </p>
     </div>
@@ -413,6 +438,8 @@ export function OnboardingPage() {
   const [stage, setStage] = useState<Stage>(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [leaving, setLeaving] = useState(false);
+  const [otherComplicationDraft, setOtherComplicationDraft] = useState("");
+  const [showOtherComplicationField, setShowOtherComplicationField] = useState(false);
   const [otherConditionDraft, setOtherConditionDraft] = useState("");
   const [showOtherField, setShowOtherField] = useState(false);
   const [medDraft, setMedDraft] = useState("");
@@ -622,23 +649,23 @@ export function OnboardingPage() {
   const dueEthiopian = dating ? formatEthiopian(dating.dueDate) : null;
 
   return (
-    <div className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-[#f3ecdf] text-[#4a3f30]">
+    <div className="relative flex h-[100dvh] w-full flex-col overflow-hidden bg-[#f3ecdf] text-[#4a3f30] dark:bg-[#15120e] dark:text-[#f0e4ce]">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 -top-24 h-[320px] w-[320px] rounded-full bg-[#fff6e3] opacity-95 blur-[90px]" />
-        <div className="absolute -right-24 top-[26%] h-[340px] w-[340px] rounded-full bg-[#f3d9a4] opacity-45 blur-[110px]" />
-        <div className="absolute -left-20 bottom-[-10%] h-[300px] w-[300px] rounded-full bg-[#f7dfb3] opacity-55 blur-[100px]" />
+        <div className="absolute -left-24 -top-24 h-[320px] w-[320px] rounded-full bg-[#fff6e3] opacity-95 blur-[90px] dark:bg-[#c99642] dark:opacity-12" />
+        <div className="absolute -right-24 top-[26%] h-[340px] w-[340px] rounded-full bg-[#f3d9a4] opacity-45 blur-[110px] dark:bg-[#8d6224] dark:opacity-15" />
+        <div className="absolute -left-20 bottom-[-10%] h-[300px] w-[300px] rounded-full bg-[#f7dfb3] opacity-55 blur-[100px] dark:bg-[#6e4c1b] dark:opacity-16" />
       </div>
 
       <div
         data-onboarding-scroll
         className="relative mx-auto flex w-full max-w-[440px] min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain px-5 pb-6 sm:px-6"
       >
-        <header className="flex items-center justify-between gap-3 pt-[max(16px,env(safe-area-inset-top))]">
+        <header className="relative z-30 flex items-center justify-between gap-3 pt-[max(16px,env(safe-area-inset-top))]">
           {screen === "welcome" ? (
             <a
               href="#login"
               aria-label="Back to sign in"
-              className="home-icon-solid flex h-11 w-11 items-center justify-center rounded-full text-[#4a3f30] transition hover:border-[#c9a35d]/70 active:scale-95"
+              className="home-icon-solid flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-[#4a3f30] dark:text-[#f0e4ce] transition hover:border-[#c9a35d]/70 active:scale-95"
             >
               <ChevronLeft size={19} strokeWidth={1.9} />
             </a>
@@ -647,7 +674,7 @@ export function OnboardingPage() {
               type="button"
               onClick={goBack}
               aria-label="Back a step"
-              className="home-icon-solid flex h-11 w-11 items-center justify-center rounded-full text-[#4a3f30] transition hover:border-[#c9a35d]/70 active:scale-95"
+              className="home-icon-solid flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-[#4a3f30] dark:text-[#f0e4ce] transition hover:border-[#c9a35d]/70 active:scale-95"
             >
               <ChevronLeft size={19} strokeWidth={1.9} />
             </button>
@@ -656,10 +683,12 @@ export function OnboardingPage() {
           {/* Center logo or step pills */}
           {screen === "welcome" ? (
             <div className="flex items-center gap-2">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8]">
-                <Heart size={14} fill="currentColor" strokeWidth={2} aria-hidden="true" />
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]">
+                <BrandMark className="h-4 w-4" strokeWidth={1.9} />
               </span>
-              <span className="text-[16px] font-medium tracking-tight text-[#4a3f30]">aurelia</span>
+              <span className="text-[16px] font-medium tracking-tight text-[#4a3f30] dark:text-[#f5ede0]">
+                aurelia
+              </span>
             </div>
           ) : (
             <div
@@ -675,10 +704,10 @@ export function OnboardingPage() {
                     key={stepNumber}
                     className={`h-1.5 rounded-full transition-all duration-500 ${
                       isActive
-                        ? "w-8 bg-[#3b3226]"
+                        ? "w-8 bg-[#3b3226] dark:bg-[#e5be79]"
                         : isPassed
-                          ? "w-5 bg-[#c9a35d]"
-                          : "w-1.5 bg-[#d9c9a8]"
+                          ? "w-5 bg-[#c9a35d] dark:bg-[#9c7838]"
+                          : "w-1.5 bg-[#d9c9a8] dark:bg-[#3d3123]"
                     }`}
                   />
                 );
@@ -686,19 +715,23 @@ export function OnboardingPage() {
             </div>
           )}
 
-          <span aria-hidden="true" className="h-11 w-11 shrink-0" />
+          {screen === "complete" ? (
+            <span aria-hidden="true" className="h-12 w-12 shrink-0" />
+          ) : (
+            <LanguageSwitcher />
+          )}
         </header>
 
         <div ref={contentRef} className="flex-1 pt-6">
           {/* ------------------------------ Welcome ------------------------------ */}
           {screen === "welcome" && (
-            <div className={`transition-all duration-300 ${leaving ? "-translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}>
-              <h1 className="text-[34px] font-light leading-[1.12] tracking-[-0.035em] text-[#3b3226]">
-                Let&apos;s set up
-                <br />
-                your care.
+            <div
+              className={`transition-all duration-300 ${leaving ? "-translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}
+            >
+              <h1 className="whitespace-nowrap text-[clamp(26px,7.5vw,34px)] font-light leading-[1.12] tracking-[-0.035em] text-[#3b3226] dark:text-[#f5ede0]">
+                Let&apos;s set up your care.
               </h1>
-              <p className="mt-3 text-[15px] leading-relaxed text-[#6f6149]">
+              <p className="mt-3 text-[15px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                 A short, gentle set-up so Aurelia can follow your pregnancy accurately and prepare
                 the right care at the right time.
               </p>
@@ -706,26 +739,45 @@ export function OnboardingPage() {
               {/* Items directly on the background without cards or circle badge wrappers */}
               <ol className="mt-8 space-y-5">
                 {[
-                  { icon: <Heart size={20} strokeWidth={1.8} />, title: "A little about you", body: "Your age, where you live and your pregnancy history." },
-                  { icon: <CalendarDays size={20} strokeWidth={1.8} />, title: "Your dates", body: "Work out how far along you are, in either calendar." },
-                  { icon: <Baby size={20} strokeWidth={1.8} />, title: "Your care plan", body: "Reminders, check-ins and reports shaped around you." },
+                  {
+                    icon: <Heart size={20} strokeWidth={1.8} />,
+                    title: "A little about you",
+                    body: "Your age, where you live and your pregnancy history.",
+                  },
+                  {
+                    icon: <CalendarDays size={20} strokeWidth={1.8} />,
+                    title: "Your dates",
+                    body: "Work out how far along you are, in either calendar.",
+                  },
+                  {
+                    icon: <Baby size={20} strokeWidth={1.8} />,
+                    title: "Your care plan",
+                    body: "Reminders, check-ins and reports shaped around you.",
+                  },
                 ].map((item, index) => (
                   <li key={item.title} className="flex items-start gap-3.5">
-                    <span className="mt-0.5 text-[#8d6a2a]" aria-hidden="true">
+                    <span className="mt-0.5 text-[#8d6a2a] dark:text-[#e5be79]" aria-hidden="true">
                       {item.icon}
                     </span>
                     <div className="min-w-0">
-                      <p className="text-[15.5px] font-medium text-[#3b3226]">
+                      <p className="text-[15.5px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
                         {index + 1}. {item.title}
                       </p>
-                      <p className="mt-1 text-[13.5px] leading-relaxed text-[#6f6149]">{item.body}</p>
+                      <p className="mt-1 text-[13.5px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
+                        {item.body}
+                      </p>
                     </div>
                   </li>
                 ))}
               </ol>
 
-              <p className="mt-7 flex items-start gap-2 text-[12.5px] leading-relaxed text-[#7b6642]">
-                <Info size={15} strokeWidth={2} className="mt-0.5 shrink-0 text-[#8d6a2a]" aria-hidden="true" />
+              <p className="mt-7 flex items-start gap-2 text-[12.5px] leading-relaxed text-[#7b6642] dark:text-[#a8967b]">
+                <Info
+                  size={15}
+                  strokeWidth={2}
+                  className="mt-0.5 shrink-0 text-[#8d6a2a] dark:text-[#e5be79]"
+                  aria-hidden="true"
+                />
                 About 3 minutes. You can change any answer later in settings, and your details stay
                 private to your care team.
               </p>
@@ -734,20 +786,25 @@ export function OnboardingPage() {
 
           {/* ------------------------------ Stages ------------------------------ */}
           {screen !== "welcome" && (
-            <div className={`transition-all duration-300 ${leaving ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}>
+            <div
+              className={`transition-all duration-300 ${leaving ? "translate-y-2 opacity-0" : "translate-y-0 opacity-100"}`}
+            >
               {stage === 1 && (
                 <>
-                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226]">
+                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226] dark:text-[#f5ede0]">
                     A few basics first
                   </h2>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149]">
+                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                     These shape the guidance and appointment schedule you&apos;ll see.
                   </p>
 
                   <div className="mt-7 space-y-5">
                     {/* Age — plain on background */}
                     <div>
-                      <label htmlFor="age" className="block text-[14.5px] font-medium text-[#3b3226]">
+                      <label
+                        htmlFor="age"
+                        className="block text-[14.5px] font-medium text-[#3b3226] dark:text-[#f5ede0]"
+                      >
                         Age
                       </label>
                       <div className="relative mt-2">
@@ -761,26 +818,37 @@ export function OnboardingPage() {
                           onChange={(event) => update({ age: event.target.value })}
                           placeholder="e.g. 28"
                           aria-invalid={Boolean(errors.age)}
-                          className={`min-h-12 w-full rounded-2xl border bg-white/85 px-4 py-3 text-[15px] text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] focus:bg-white ${
-                            errors.age ? "border-[#9c3a29]/70" : "border-[#d8c6a4]"
+                          className={`min-h-12 w-full rounded-2xl border bg-white/85 px-4 py-3 text-[15px] text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] focus:bg-white dark:bg-[#18130e] dark:text-[#f5ede0] dark:placeholder:text-[#7d6e58] dark:focus:border-[#e5be79] dark:focus:bg-[#1d1711] ${
+                            errors.age
+                              ? "border-[#9c3a29]/70 dark:border-[#e4725c]/70"
+                              : "border-[#d8c6a4] dark:border-[#4a3c2c]"
                           }`}
                         />
-                        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[13px] text-[#9b8a6f]">
+                        <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-[13px] text-[#9b8a6f] dark:text-[#9c8b72]">
                           years
                         </span>
                       </div>
-                      {errors.age && <p role="alert" className="mt-1.5 text-[12px] text-[#9c3a29]">{errors.age}</p>}
+                      {errors.age && (
+                        <p role="alert" className="mt-1.5 text-[12px] text-[#9c3a29] dark:text-[#f08b75]">
+                          {errors.age}
+                        </p>
+                      )}
                     </div>
 
                     {/* Residence area — sliding pill */}
                     <div>
                       <div className="flex items-center justify-between gap-2">
-                        <label className="flex items-center gap-1.5 text-[14.5px] font-medium text-[#3b3226]">
-                          <MapPin size={15} strokeWidth={1.9} className="text-[#8d6a2a]" aria-hidden="true" />
+                        <label className="flex items-center gap-1.5 text-[14.5px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                          <MapPin
+                            size={15}
+                            strokeWidth={1.9}
+                            className="text-[#8d6a2a] dark:text-[#e5be79]"
+                            aria-hidden="true"
+                          />
                           Residence area
                         </label>
                         {data.residence && (
-                          <span className="text-[12px] text-[#8d6a2a]">
+                          <span className="text-[12px] text-[#8d6a2a] dark:text-[#dfb870]">
                             {data.residence}
                           </span>
                         )}
@@ -793,11 +861,15 @@ export function OnboardingPage() {
                           options={RESIDENCE_PILL_OPTIONS}
                         />
                       </div>
-                      {errors.residence && <p role="alert" className="mt-1.5 text-[12px] text-[#9c3a29]">{errors.residence}</p>}
+                      {errors.residence && (
+                        <p role="alert" className="mt-1.5 text-[12px] text-[#9c3a29] dark:text-[#f08b75]">
+                          {errors.residence}
+                        </p>
+                      )}
                     </div>
 
                     {/* Total pregnancies & Live births — no card, no number circles */}
-                    <div className="divide-y divide-[#d8c6a4]/50 pt-1">
+                    <div className="divide-y divide-[#d8c6a4]/50 pt-1 dark:divide-[#3d3123]">
                       <NumberStepper
                         id="total-pregnancies"
                         label="Total pregnancies"
@@ -818,7 +890,11 @@ export function OnboardingPage() {
                         onChange={(value) => update({ liveBirths: value })}
                       />
                     </div>
-                    {errors.births && <p role="alert" className="text-[12px] text-[#9c3a29]">{errors.births}</p>}
+                    {errors.births && (
+                      <p role="alert" className="text-[12px] text-[#9c3a29] dark:text-[#f08b75]">
+                        {errors.births}
+                      </p>
+                    )}
                   </div>
                 </>
               )}
@@ -826,10 +902,10 @@ export function OnboardingPage() {
               {/* ------------------------------ Stage 2 ------------------------------ */}
               {stage === 2 && (
                 <>
-                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226]">
+                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226] dark:text-[#f5ede0]">
                     How far along are you?
                   </h2>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149]">
+                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                     We use this to date your pregnancy and plan your appointments.
                   </p>
 
@@ -847,38 +923,32 @@ export function OnboardingPage() {
 
                   {data.dating === "lmp" && (
                     <div className="mt-6 space-y-5">
-                      {/* Calendar system switch */}
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-2 text-[13.5px] font-medium text-[#4a3f30]">
-                          <Ruler size={15} strokeWidth={1.9} className="text-[#8d6a2a]" aria-hidden="true" />
-                          Calendar system
-                        </div>
-                        <div className="flex rounded-full border border-[#d8c6a4] bg-white/85 p-0.5">
-                          {(["gregorian", "ethiopian"] as CalendarSystem[]).map((calendar) => (
-                            <button
-                              key={calendar}
-                              type="button"
-                              aria-pressed={data.calendar === calendar}
-                              onClick={() => {
-                                if (calendar === data.calendar) return;
-                                update({ calendar, lmpDay: "", lmpMonth: "", lmpYear: "" });
-                              }}
-                              className={`min-h-9 rounded-full px-3 text-[12px] font-medium capitalize transition-colors ${
-                                data.calendar === calendar ? "bg-[#4a3f30] text-[#fffaf0]" : "text-[#6f6149]"
-                              }`}
-                            >
-                              {calendar === "gregorian" ? "Gregorian" : "Ethiopian"}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Date selects — directly on background */}
+                      {/* Date selects — directly on background, with calendar dropdown beside question */}
                       <div>
-                        <p className="flex items-center gap-1.5 text-[14px] font-medium text-[#3b3226]">
-                          <CalendarDays size={15} strokeWidth={1.9} className="text-[#8d6a2a]" aria-hidden="true" />
-                          First day of your last period
-                        </p>
+                        <div className="flex items-center justify-between gap-2.5">
+                          <p className="flex min-w-0 items-center gap-1.5 text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                            <CalendarDays
+                              size={15}
+                              strokeWidth={1.9}
+                              className="shrink-0 text-[#8d6a2a] dark:text-[#e5be79]"
+                              aria-hidden="true"
+                            />
+                            <span>First day of your last period</span>
+                          </p>
+                          <ThemeSelect<CalendarSystem>
+                            id="calendar-system"
+                            label="Calendar system"
+                            value={(data.calendar || "gregorian") as CalendarSystem}
+                            options={[
+                              { value: "gregorian", label: "Gregorian", hint: "G.C." },
+                              { value: "ethiopian", label: "Ethiopian", hint: "E.C." },
+                            ]}
+                            onChange={(calendar) => {
+                              if (calendar === data.calendar) return;
+                              update({ calendar, lmpDay: "", lmpMonth: "", lmpYear: "" });
+                            }}
+                          />
+                        </div>
                         <div className="mt-2.5 grid grid-cols-3 gap-2.5">
                           <DateSelect
                             id="lmp-day"
@@ -899,34 +969,43 @@ export function OnboardingPage() {
                             label="Year"
                             value={data.lmpYear}
                             onChange={(value) => update({ lmpYear: value })}
-                            options={years.map((year) => ({ value: String(year), label: String(year) }))}
+                            options={years.map((year) => ({
+                              value: String(year),
+                              label: String(year),
+                            }))}
                           />
                         </div>
-                        {errors.lmp && <p role="alert" className="mt-2 text-[12px] text-[#9c3a29]">{errors.lmp}</p>}
+                        {errors.lmp && (
+                          <p role="alert" className="mt-2 text-[12px] text-[#9c3a29] dark:text-[#f08b75]">
+                            {errors.lmp}
+                          </p>
+                        )}
                       </div>
 
                       {dating && dating.days >= 0 && (
-                        <div
-                          aria-live="polite"
-                          className="home-glass-gold rounded-[22px] p-4.5"
-                        >
-                          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#6f5a35]">
+                        <div aria-live="polite" className="home-glass-gold rounded-[22px] p-4.5">
+                          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#6f5a35] dark:text-[#e5be79]">
                             Based on your dates
                           </p>
-                          <p className="mt-1.5 text-[21px] font-medium leading-snug text-[#3b3226]">
-                            {dating.weeks} weeks, {dating.remainingDays} {dating.remainingDays === 1 ? "day" : "days"} along
+                          <p className="mt-1.5 text-[21px] font-medium leading-snug text-[#3b3226] dark:text-[#f5ede0]">
+                            {dating.weeks} weeks, {dating.remainingDays}{" "}
+                            {dating.remainingDays === 1 ? "day" : "days"} along
                           </p>
-                          <p className="mt-1 text-[13px] text-[#6f5a35]">
+                          <p className="mt-1 text-[13px] text-[#6f5a35] dark:text-[#d8c7ab]">
                             {dating.trimester === 0 ? "Due today" : `Trimester ${dating.trimester}`}
                             {dating.trimester > 0 ? " · " : ""}
                             {Math.max(0, 280 - dating.days)} days to go
                           </p>
-                          <div className="mt-3 border-t border-[#b98a3e]/25 pt-2.5">
-                            <p className="text-[12px] text-[#7b6642]">
+                          <div className="mt-3 border-t border-[#b98a3e]/25 pt-2.5 dark:border-[#e5be79]/22">
+                            <p className="text-[12px] text-[#7b6642] dark:text-[#b9a88e]">
                               Estimated due date
                             </p>
-                            <p className="text-[14px] font-medium text-[#3b3226]">{dueText}</p>
-                            <p className="mt-0.5 text-[12px] text-[#85735a]">{dueEthiopian} (Ethiopian)</p>
+                            <p className="text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                              {dueText}
+                            </p>
+                            <p className="mt-0.5 text-[12px] text-[#85735a] dark:text-[#c7b69c]">
+                              {dueEthiopian} (Ethiopian)
+                            </p>
                           </div>
                         </div>
                       )}
@@ -937,12 +1016,17 @@ export function OnboardingPage() {
                     <div className="mt-6 space-y-5">
                       {/* Known weeks & days — directly on background */}
                       <div>
-                        <p className="text-[14px] font-medium text-[#3b3226]">
+                        <p className="text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
                           How many weeks and days have you been pregnant?
                         </p>
                         <div className="mt-2.5 grid grid-cols-2 gap-3">
                           <div>
-                            <label htmlFor="known-weeks" className="block text-[12px] font-medium text-[#6f6149]">Weeks</label>
+                            <label
+                              htmlFor="known-weeks"
+                              className="block text-[12px] font-medium text-[#6f6149] dark:text-[#b9a88e]"
+                            >
+                              Weeks
+                            </label>
                             <input
                               id="known-weeks"
                               type="number"
@@ -953,13 +1037,20 @@ export function OnboardingPage() {
                               onChange={(event) => update({ knownWeeks: event.target.value })}
                               placeholder="0–42"
                               aria-invalid={Boolean(errors.known)}
-                              className={`mt-1.5 min-h-12 w-full rounded-2xl border bg-white/85 px-4 py-3 text-[15px] tabular-nums text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] focus:bg-white ${
-                                errors.known ? "border-[#9c3a29]/70" : "border-[#d8c6a4]"
+                              className={`mt-1.5 min-h-12 w-full rounded-2xl border bg-white/85 px-4 py-3 text-[15px] tabular-nums text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] focus:bg-white dark:bg-[#18130e] dark:text-[#f5ede0] dark:placeholder:text-[#7d6e58] dark:focus:border-[#e5be79] dark:focus:bg-[#1d1711] ${
+                                errors.known
+                                  ? "border-[#9c3a29]/70 dark:border-[#e4725c]/70"
+                                  : "border-[#d8c6a4] dark:border-[#4a3c2c]"
                               }`}
                             />
                           </div>
                           <div>
-                            <label htmlFor="known-days" className="block text-[12px] font-medium text-[#6f6149]">Days</label>
+                            <label
+                              htmlFor="known-days"
+                              className="block text-[12px] font-medium text-[#6f6149] dark:text-[#b9a88e]"
+                            >
+                              Days
+                            </label>
                             <input
                               id="known-days"
                               type="number"
@@ -969,36 +1060,55 @@ export function OnboardingPage() {
                               value={data.knownDays}
                               onChange={(event) => update({ knownDays: event.target.value })}
                               placeholder="0–6"
-                              className="mt-1.5 min-h-12 w-full rounded-2xl border border-[#d8c6a4] bg-white/85 px-4 py-3 text-[15px] tabular-nums text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] focus:bg-white"
+                              className="mt-1.5 min-h-12 w-full rounded-2xl border border-[#d8c6a4] bg-white/85 px-4 py-3 text-[15px] tabular-nums text-[#3b3226] outline-none transition-colors focus:border-[#a87a3d] focus:bg-white dark:border-[#4a3c2c] dark:bg-[#18130e] dark:text-[#f5ede0] dark:placeholder:text-[#7d6e58] dark:focus:border-[#e5be79] dark:focus:bg-[#1d1711]"
                             />
                           </div>
                         </div>
-                        {errors.known && <p role="alert" className="mt-2 text-[12px] text-[#9c3a29]">{errors.known}</p>}
+                        {errors.known && (
+                          <p role="alert" className="mt-2 text-[12px] text-[#9c3a29] dark:text-[#f08b75]">
+                            {errors.known}
+                          </p>
+                        )}
                       </div>
 
-                      {data.knownWeeks !== "" && Number(data.knownWeeks) <= 42 && Number(data.knownDays) <= 6 && (
-                        <div aria-live="polite" className="home-glass-gold rounded-[22px] p-4.5">
-                          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#6f5a35]">
-                            Based on what you know
-                          </p>
-                          <p className="mt-1.5 text-[21px] font-medium leading-snug text-[#3b3226]">
-                            {knownWeeks} weeks, {knownDays} {knownDays === 1 ? "day" : "days"} along
-                          </p>
-                          <p className="mt-1 text-[13px] text-[#6f5a35]">
-                            Trimester {dating?.trimester} · {Math.max(0, 280 - (knownWeeks * 7 + knownDays))} days to go
-                          </p>
-                          <div className="mt-3 border-t border-[#b98a3e]/25 pt-2.5">
-                            <p className="text-[12px] text-[#7b6642]">Estimated due date</p>
-                            <p className="text-[14px] font-medium text-[#3b3226]">{dueText}</p>
-                            <p className="mt-0.5 text-[12px] text-[#85735a]">{dueEthiopian} (Ethiopian)</p>
+                      {data.knownWeeks !== "" &&
+                        Number(data.knownWeeks) <= 42 &&
+                        Number(data.knownDays) <= 6 && (
+                          <div aria-live="polite" className="home-glass-gold rounded-[22px] p-4.5">
+                            <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-[#6f5a35] dark:text-[#e5be79]">
+                              Based on what you know
+                            </p>
+                            <p className="mt-1.5 text-[21px] font-medium leading-snug text-[#3b3226] dark:text-[#f5ede0]">
+                              {knownWeeks} weeks, {knownDays} {knownDays === 1 ? "day" : "days"}{" "}
+                              along
+                            </p>
+                            <p className="mt-1 text-[13px] text-[#6f5a35] dark:text-[#d8c7ab]">
+                              Trimester {dating?.trimester} ·{" "}
+                              {Math.max(0, 280 - (knownWeeks * 7 + knownDays))} days to go
+                            </p>
+                            <div className="mt-3 border-t border-[#b98a3e]/25 pt-2.5 dark:border-[#e5be79]/22">
+                              <p className="text-[12px] text-[#7b6642] dark:text-[#b9a88e]">
+                                Estimated due date
+                              </p>
+                              <p className="text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                                {dueText}
+                              </p>
+                              <p className="mt-0.5 text-[12px] text-[#85735a] dark:text-[#c7b69c]">
+                                {dueEthiopian} (Ethiopian)
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      )}
+                        )}
                     </div>
                   )}
 
-                  <p className="mt-6 flex items-start gap-2 text-[12.5px] leading-relaxed text-[#7b6642]">
-                    <Info size={15} strokeWidth={2} className="mt-0.5 shrink-0 text-[#8d6a2a]" aria-hidden="true" />
+                  <p className="mt-6 flex items-start gap-2 text-[12.5px] leading-relaxed text-[#7b6642] dark:text-[#a8967b]">
+                    <Info
+                      size={15}
+                      strokeWidth={2}
+                      className="mt-0.5 shrink-0 text-[#8d6a2a] dark:text-[#e5be79]"
+                      aria-hidden="true"
+                    />
                     {data.dating === "lmp"
                       ? "Not sure of the exact day? A close estimate is fine — your midwife will confirm at your first scan."
                       : "You can change this later if your scan gives a different date."}
@@ -1009,10 +1119,10 @@ export function OnboardingPage() {
               {/* ------------------------------ Stage 3 ------------------------------ */}
               {stage === 3 && (
                 <>
-                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226]">
+                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226] dark:text-[#f5ede0]">
                     Your pregnancy history
                   </h2>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149]">
+                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                     This helps us spot anything that needs closer care this time.
                   </p>
 
@@ -1039,11 +1149,11 @@ export function OnboardingPage() {
                       error={errors.malaria}
                     />
 
-                    <div className="border-t border-[#d8c6a4]/60 pt-5">
-                      <p className="text-[15px] font-medium text-[#3b3226]">
+                    <div className="border-t border-[#d8c6a4]/60 pt-5 dark:border-[#3d3123]">
+                      <p className="text-[15px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
                         Past Pregnancy Complications
                       </p>
-                      <p className="mt-1 text-[12.5px] text-[#85735a]">
+                      <p className="mt-1 text-[12.5px] text-[#85735a] dark:text-[#9c8b72]">
                         Select any you&apos;ve experienced — or leave blank if none.
                       </p>
                       <div className="mt-3 space-y-2">
@@ -1057,7 +1167,80 @@ export function OnboardingPage() {
                             }
                           />
                         ))}
+
+                        {data.customComplications.map((complication) => (
+                          <div
+                            key={complication}
+                            className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-[#c9a35d] bg-[#fbe7b8]/70 px-4 py-3 dark:border-[#e5be79] dark:bg-[#e5be79]/18"
+                          >
+                            <span className="flex min-w-0 items-center gap-2.5">
+                              <span
+                                aria-hidden="true"
+                                className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#4a3f30] bg-[#4a3f30] text-[#fbe7b8] dark:border-[#e5be79] dark:bg-[#e5be79] dark:text-[#231b12]"
+                              >
+                                <Check size={13} strokeWidth={3} />
+                              </span>
+                              <span className="truncate text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                                {complication}
+                              </span>
+                            </span>
+                            <button
+                              type="button"
+                              aria-label={`Remove ${complication}`}
+                              onClick={() => {
+                                update({
+                                  customComplications: data.customComplications.filter(
+                                    (entry) => entry !== complication,
+                                  ),
+                                  complications: data.complications.filter(
+                                    (entry) => entry !== complication,
+                                  ),
+                                });
+                              }}
+                              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#85735a] transition-colors hover:bg-white/70 hover:text-[#9c3a29] dark:text-[#b9a88e] dark:hover:bg-white/10 dark:hover:text-[#f08b75]"
+                            >
+                              <X size={15} strokeWidth={2.2} />
+                            </button>
+                          </div>
+                        ))}
+
+                        <ChoiceRow
+                          label="Other"
+                          selected={showOtherComplicationField}
+                          onToggle={() =>
+                            setShowOtherComplicationField((current) => !current)
+                          }
+                        />
                       </div>
+
+                      {showOtherComplicationField && (
+                        <div className="mt-4">
+                          <AddField
+                            id="other-complication"
+                            label="Specify Other Pregnancy Complication"
+                            placeholder="e.g. Placenta previa"
+                            value={otherComplicationDraft}
+                            onChange={setOtherComplicationDraft}
+                            onAdd={() => {
+                              const name = otherComplicationDraft.trim();
+                              if (!name) return;
+                              if (
+                                !data.customComplications.some(
+                                  (entry) => entry.toLowerCase() === name.toLowerCase(),
+                                )
+                              ) {
+                                update({
+                                  customComplications: [...data.customComplications, name],
+                                  complications: data.complications.includes(name)
+                                    ? data.complications
+                                    : [...data.complications, name],
+                                });
+                              }
+                              setOtherComplicationDraft("");
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
                   </div>
                 </>
@@ -1066,10 +1249,10 @@ export function OnboardingPage() {
               {/* ------------------------------ Stage 4 ------------------------------ */}
               {stage === 4 && (
                 <>
-                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226]">
+                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226] dark:text-[#f5ede0]">
                     Known Medical Conditions
                   </h2>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149]">
+                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                     Select any that apply. Add anything else so your care team knows.
                   </p>
 
@@ -1088,16 +1271,16 @@ export function OnboardingPage() {
                     {data.customConditions.map((condition) => (
                       <div
                         key={condition}
-                        className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-[#c9a35d] bg-[#fbe7b8]/70 px-4 py-3"
+                        className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-[#c9a35d] bg-[#fbe7b8]/70 px-4 py-3 dark:border-[#e5be79] dark:bg-[#e5be79]/18"
                       >
                         <span className="flex min-w-0 items-center gap-2.5">
                           <span
                             aria-hidden="true"
-                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#4a3f30] bg-[#4a3f30] text-[#fbe7b8]"
+                            className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#4a3f30] bg-[#4a3f30] text-[#fbe7b8] dark:border-[#e5be79] dark:bg-[#e5be79] dark:text-[#231b12]"
                           >
                             <Check size={13} strokeWidth={3} />
                           </span>
-                          <span className="truncate text-[14px] font-medium text-[#3b3226]">
+                          <span className="truncate text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
                             {condition}
                           </span>
                         </span>
@@ -1112,7 +1295,7 @@ export function OnboardingPage() {
                               conditions: data.conditions.filter((entry) => entry !== condition),
                             });
                           }}
-                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#85735a] transition-colors hover:bg-white/70 hover:text-[#9c3a29]"
+                          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#85735a] transition-colors hover:bg-white/70 hover:text-[#9c3a29] dark:text-[#b9a88e] dark:hover:bg-white/10 dark:hover:text-[#f08b75]"
                         >
                           <X size={15} strokeWidth={2.2} />
                         </button>
@@ -1160,10 +1343,10 @@ export function OnboardingPage() {
               {/* ------------------------------ Stage 5 ------------------------------ */}
               {stage === 5 && (
                 <>
-                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226]">
+                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226] dark:text-[#f5ede0]">
                     Do you take any medications?
                   </h2>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149]">
+                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                     Include anything prescribed, over-the-counter, or traditional.
                   </p>
 
@@ -1199,32 +1382,48 @@ export function OnboardingPage() {
                         />
 
                         {data.medications.length > 0 && (
-                          <ul aria-label="Added medications" className="mt-3 flex flex-wrap gap-2">
-                            {data.medications.map((medication) => (
-                              <li
-                                key={medication}
-                                className="flex items-center gap-1.5 rounded-full border border-[#c9a35d] bg-[#fbe7b8]/70 py-1.5 pl-3.5 pr-2"
-                              >
-                                <span className="max-w-[180px] truncate text-[13px] font-medium text-[#3b3226]">
-                                  {medication}
-                                </span>
-                                <button
-                                  type="button"
-                                  aria-label={`Remove ${medication}`}
-                                  onClick={() =>
-                                    update({
-                                      medications: data.medications.filter(
-                                        (entry) => entry !== medication,
-                                      ),
-                                    })
-                                  }
-                                  className="flex h-6 w-6 items-center justify-center rounded-full text-[#85735a] transition-colors hover:bg-white/70 hover:text-[#9c3a29]"
+                          <div className="mt-5">
+                            <p className="text-[13.5px] font-medium text-[#4a3f30] dark:text-[#dfcfb6]">
+                              Current medications
+                            </p>
+                            <ul
+                              aria-label="Current medications"
+                              className="mt-2.5 space-y-2"
+                            >
+                              {data.medications.map((medication) => (
+                                <li
+                                  key={medication}
+                                  className="flex min-h-12 w-full items-center justify-between gap-3 rounded-full border border-[#c9a35d] bg-[#fbe7b8]/70 py-2 pl-4 pr-2.5 shadow-[0_6px_16px_-10px_rgba(160,120,50,0.45)] dark:border-[#e5be79] dark:bg-[#e5be79]/18"
                                 >
-                                  <X size={13} strokeWidth={2.4} />
-                                </button>
-                              </li>
-                            ))}
-                          </ul>
+                                  <span className="flex min-w-0 items-center gap-2.5">
+                                    <Pill
+                                      size={16}
+                                      strokeWidth={1.85}
+                                      aria-hidden="true"
+                                      className="shrink-0 text-[#6f5a35] dark:text-[#e5be79]"
+                                    />
+                                    <span className="truncate text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                                      {medication}
+                                    </span>
+                                  </span>
+                                  <button
+                                    type="button"
+                                    aria-label={`Remove ${medication}`}
+                                    onClick={() =>
+                                      update({
+                                        medications: data.medications.filter(
+                                          (entry) => entry !== medication,
+                                        ),
+                                      })
+                                    }
+                                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-[#85735a] transition-colors hover:bg-white/70 hover:text-[#9c3a29] dark:text-[#b9a88e] dark:hover:bg-white/10 dark:hover:text-[#f08b75]"
+                                  >
+                                    <X size={15} strokeWidth={2.2} />
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
                         )}
                       </div>
                     )}
@@ -1235,10 +1434,10 @@ export function OnboardingPage() {
               {/* ------------------------------ Stage 6 ------------------------------ */}
               {stage === 6 && (
                 <>
-                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226]">
+                  <h2 className="text-[28px] font-light leading-[1.15] tracking-tight text-[#3b3226] dark:text-[#f5ede0]">
                     Are you taking any supplements?
                   </h2>
-                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149]">
+                  <p className="mt-2 text-[14px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                     These support you and your baby&apos;s growth.
                   </p>
 
@@ -1254,7 +1453,7 @@ export function OnboardingPage() {
 
                     {data.takesSupplements === true && (
                       <div>
-                        <p className="text-[14px] font-medium text-[#3b3226]">
+                        <p className="text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
                           Select your supplements
                         </p>
                         <div className="mt-2.5 space-y-2">
@@ -1282,13 +1481,13 @@ export function OnboardingPage() {
                 <div className="flex flex-col items-center text-center">
                   <MicRings />
 
-                  <h2 className="mt-8 text-[30px] font-light leading-[1.12] tracking-[-0.03em] text-[#3b3226]">
+                  <h2 className="mt-8 text-[30px] font-light leading-[1.12] tracking-[-0.03em] text-[#3b3226] dark:text-[#f5ede0]">
                     Talk in Amharic,
                     <br />
                     we listen.
                   </h2>
 
-                  <p className="mx-auto mt-4 max-w-[34ch] text-[15px] leading-relaxed text-[#6f6149]">
+                  <p className="mx-auto mt-4 max-w-[34ch] text-[15px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
                     Your daily check-ins are spoken. The microphone lets Aurelia hear your
                     answers, understand them, and shape your care around them.
                   </p>
@@ -1300,7 +1499,13 @@ export function OnboardingPage() {
               )}
 
               {/* ---------------------------- Completed ----------------------------- */}
-              {screen === "complete" && <OnboardingComplete onDone={() => { window.location.hash = "#home"; }} />}
+              {screen === "complete" && (
+                <OnboardingComplete
+                  onDone={() => {
+                    window.location.hash = "#home";
+                  }}
+                />
+              )}
             </div>
           )}
         </div>
@@ -1313,17 +1518,22 @@ export function OnboardingPage() {
             <button
               type="button"
               onClick={startOnboarding}
-              className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#3b3226] px-6 py-3.5 text-[15px] font-medium text-[#fbe7b8] shadow-[0_14px_30px_-16px_rgba(60,45,25,0.7)] transition-colors hover:bg-[#4a3f30] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a]"
+              className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#3b3226] px-6 py-3.5 text-[15px] font-medium text-[#fbe7b8] shadow-[0_14px_30px_-16px_rgba(60,45,25,0.7)] transition-colors hover:bg-[#4a3f30] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a] dark:bg-[#e5be79] dark:text-[#231b12] dark:shadow-[0_16px_34px_-14px_rgba(229,190,121,0.45)] dark:hover:bg-[#f0cf92] dark:focus-visible:outline-[#e5be79]"
             >
               Start
-              <ArrowRight size={17} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+              <ArrowRight
+                size={17}
+                strokeWidth={2}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+                aria-hidden="true"
+              />
             </button>
           ) : stage === TOTAL_STEPS ? (
             <div className="space-y-2">
               <button
                 type="button"
                 onClick={tryVoiceCheckin}
-                className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#3b3226] px-6 py-3.5 text-[15px] font-medium text-[#fbe7b8] shadow-[0_14px_30px_-16px_rgba(60,45,25,0.7)] transition-colors hover:bg-[#4a3f30] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a]"
+                className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#3b3226] px-6 py-3.5 text-[15px] font-medium text-[#fbe7b8] shadow-[0_14px_30px_-16px_rgba(60,45,25,0.7)] transition-colors hover:bg-[#4a3f30] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a] dark:bg-[#e5be79] dark:text-[#231b12] dark:shadow-[0_16px_34px_-14px_rgba(229,190,121,0.45)] dark:hover:bg-[#f0cf92] dark:focus-visible:outline-[#e5be79]"
               >
                 Try voice check-in
               </button>
@@ -1331,7 +1541,7 @@ export function OnboardingPage() {
                 <button
                   type="button"
                   onClick={finishOnboarding}
-                  className="rounded-full px-4 py-2 text-[13.5px] font-medium text-[#6f6149] underline decoration-[#c9a35d]/60 underline-offset-4 transition-colors hover:text-[#3b3226]"
+                  className="rounded-full px-4 py-2 text-[13.5px] font-medium text-[#6f6149] underline decoration-[#c9a35d]/60 underline-offset-4 transition-colors hover:text-[#3b3226] dark:text-[#b9a88e] dark:hover:text-[#f5ede0]"
                 >
                   Skip for now
                 </button>
@@ -1341,10 +1551,15 @@ export function OnboardingPage() {
             <button
               type="button"
               onClick={handleContinue}
-              className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#3b3226] px-6 py-3.5 text-[15px] font-medium text-[#fbe7b8] shadow-[0_14px_30px_-16px_rgba(60,45,25,0.7)] transition-colors hover:bg-[#4a3f30] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a]"
+              className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#3b3226] px-6 py-3.5 text-[15px] font-medium text-[#fbe7b8] shadow-[0_14px_30px_-16px_rgba(60,45,25,0.7)] transition-colors hover:bg-[#4a3f30] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a] dark:bg-[#e5be79] dark:text-[#231b12] dark:shadow-[0_16px_34px_-14px_rgba(229,190,121,0.45)] dark:hover:bg-[#f0cf92] dark:focus-visible:outline-[#e5be79]"
             >
               {stage === TOTAL_STEPS ? "Finish set-up" : "Continue"}
-              <ArrowRight size={17} strokeWidth={2} className="transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true" />
+              <ArrowRight
+                size={17}
+                strokeWidth={2}
+                className="transition-transform duration-300 group-hover:translate-x-1"
+                aria-hidden="true"
+              />
             </button>
           )}
         </div>

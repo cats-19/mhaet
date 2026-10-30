@@ -50,8 +50,6 @@ export function QuickLogDialog({
   const closeRef = useRef<HTMLButtonElement>(null);
   const restoreFocusRef = useRef<HTMLElement | null>(null);
   const suppressFocusRestore = useRef(false);
-  // Live references so the reset effect depends only on `open`, preventing a
-  // reset mid-flow when saving updates the shared store.
   const profileSupplementsRef = useRef(profile.supplements);
   const savedSupplementsRef = useRef(savedSupplements);
   profileSupplementsRef.current = profile.supplements;
@@ -87,7 +85,6 @@ export function QuickLogDialog({
       ),
     );
     setGroups([]);
-    // Only run when the dialog opens, not when the saved store changes.
   }, [open, initialScreen]);
 
   useEffect(() => {
@@ -191,11 +188,11 @@ export function QuickLogDialog({
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[#3b3226]/30 backdrop-blur-md"
+        className="pointer-events-none absolute inset-0 bg-[#3b3226]/30 dark:bg-black/72 backdrop-blur-md"
       />
       <div
         ref={panelRef}
-        className="report-sheet relative max-h-[calc(100dvh-2rem)] w-full max-w-[440px] overflow-y-auto overscroll-contain rounded-[30px] border border-white/80 bg-[#fbf6ec]/[0.98] p-6 shadow-[0_18px_60px_-20px_rgba(85,55,18,0.5)] backdrop-blur-xl"
+        className="report-sheet relative max-h-[calc(100dvh-2rem)] w-full max-w-[440px] overflow-y-auto overscroll-contain rounded-[30px] border border-white/80 bg-[#fbf6ec]/[0.98] p-6 shadow-[0_18px_60px_-20px_rgba(85,55,18,0.5)] backdrop-blur-xl dark:border-[#e5be79]/22 dark:bg-[#221c15]/[0.98] dark:shadow-[0_24px_64px_-18px_rgba(0,0,0,0.88)]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-3">
@@ -204,7 +201,7 @@ export function QuickLogDialog({
               type="button"
               onClick={goBack}
               aria-label="Back to log options"
-              className="home-icon-solid flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#4a3f30] active:scale-95"
+              className="home-icon-solid flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#4a3f30] dark:text-[#f0e4ce] active:scale-95"
             >
               <ChevronLeft size={19} strokeWidth={1.9} />
             </button>
@@ -213,7 +210,7 @@ export function QuickLogDialog({
           )}
           <h2
             id="quick-log-title"
-            className="mt-2 flex-1 text-center text-[22px] font-medium leading-snug tracking-tight text-[#3b3226]"
+            className="mt-2 flex-1 text-center text-[22px] font-medium leading-snug tracking-tight text-[#3b3226] dark:text-[#f5ede0]"
           >
             {screen === "choose" && "Log by hand"}
             {screen === "supplements" && "Did you take your supplements?"}
@@ -225,7 +222,7 @@ export function QuickLogDialog({
             type="button"
             onClick={onClose}
             aria-label="Close log"
-            className="home-icon-solid flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#4a3f30] active:scale-95"
+            className="home-icon-solid flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#4a3f30] dark:text-[#f0e4ce] active:scale-95"
           >
             <X size={19} strokeWidth={1.8} />
           </button>
@@ -233,43 +230,65 @@ export function QuickLogDialog({
 
         {screen === "choose" && (
           <div className="mt-6 space-y-3">
-            <p className="text-center text-[13.5px] leading-relaxed text-[#6f6149]">
+            <p className="text-center text-[13.5px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
               What would you like to log today?
             </p>
             <button
               type="button"
-              onClick={() => { setError(""); setScreen("supplements"); }}
-              className="home-card-solid group flex w-full items-center gap-3.5 rounded-[22px] px-4 py-4 text-left transition hover:border-[#c9a35d] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a]"
+              onClick={() => {
+                setError("");
+                setScreen("supplements");
+              }}
+              className="home-card-solid group flex w-full items-center gap-3.5 rounded-[22px] px-4 py-4 text-left transition hover:border-[#c9a35d] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:hover:border-[#e5be79]/55 dark:focus-visible:outline-[#e5be79]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fbe7b8] text-[#6f5a35]">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#fbe7b8] text-[#6f5a35] dark:bg-[#e5be79]/18 dark:text-[#e5be79]">
                 <Pill size={19} strokeWidth={1.8} aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[15.5px] font-medium text-[#3b3226]">Log supplements</span>
-                <span className="mt-0.5 block text-[12.5px] text-[#85735a]">Yes or no for each one</span>
+                <span className="block text-[15.5px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                  Log supplements
+                </span>
+                <span className="mt-0.5 block text-[12.5px] text-[#85735a] dark:text-[#9c8b72]">
+                  Yes or no for each one
+                </span>
               </span>
-              <ChevronLeft size={17} className="rotate-180 shrink-0 text-[#a2937a]" aria-hidden="true" />
+              <ChevronLeft
+                size={17}
+                className="rotate-180 shrink-0 text-[#a2937a] dark:text-[#9c8b72]"
+                aria-hidden="true"
+              />
             </button>
             <button
               type="button"
-              onClick={() => { setError(""); setScreen("food"); }}
-              className="home-card-solid group flex w-full items-center gap-3.5 rounded-[22px] px-4 py-4 text-left transition hover:border-[#c9a35d] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a]"
+              onClick={() => {
+                setError("");
+                setScreen("food");
+              }}
+              className="home-card-solid group flex w-full items-center gap-3.5 rounded-[22px] px-4 py-4 text-left transition hover:border-[#c9a35d] active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:hover:border-[#e5be79]/55 dark:focus-visible:outline-[#e5be79]"
             >
-              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#d9ab5e]/20 text-[#7b5b2b]">
+              <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#d9ab5e]/20 text-[#7b5b2b] dark:bg-[#e5be79]/15 dark:text-[#e5be79]">
                 <UtensilsCrossed size={19} strokeWidth={1.8} aria-hidden="true" />
               </span>
               <span className="min-w-0 flex-1">
-                <span className="block text-[15.5px] font-medium text-[#3b3226]">Log food</span>
-                <span className="mt-0.5 block text-[12.5px] text-[#85735a]">Pick the food groups you ate</span>
+                <span className="block text-[15.5px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                  Log food
+                </span>
+                <span className="mt-0.5 block text-[12.5px] text-[#85735a] dark:text-[#9c8b72]">
+                  Pick the food groups you ate
+                </span>
               </span>
-              <ChevronLeft size={17} className="rotate-180 shrink-0 text-[#a2937a]" aria-hidden="true" />
+              <ChevronLeft
+                size={17}
+                className="rotate-180 shrink-0 text-[#a2937a] dark:text-[#9c8b72]"
+                aria-hidden="true"
+              />
             </button>
           </div>
         )}
 
         {screen === "supplements" && (
           <div className="mt-5">
-            <p className="text-center text-[13.5px] leading-relaxed text-[#6f6149]">
+            <p className="text-center text-[13.5px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
               Tap yes or no for each supplement.
             </p>
             <ul className="mt-4 space-y-2.5">
@@ -278,16 +297,22 @@ export function QuickLogDialog({
                 return (
                   <li
                     key={supplement.id}
-                    className="rounded-[20px] border border-white/70 bg-white/65 px-4 py-3.5 backdrop-blur-sm"
+                    className="rounded-[20px] border border-white/70 bg-white/65 px-4 py-3.5 backdrop-blur-sm dark:border-[#3d3123] dark:bg-[#19140f]/85"
                   >
                     <div className="flex items-center justify-between gap-3">
                       <span className="flex min-w-0 items-center gap-2.5">
-                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fbe7b8]/80 text-[#6f5a35]">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#fbe7b8]/80 text-[#6f5a35] dark:bg-[#e5be79]/18 dark:text-[#e5be79]">
                           <Pill size={16} strokeWidth={1.8} aria-hidden="true" />
                         </span>
-                        <span className="text-[15px] font-medium capitalize text-[#3b3226]">{supplement.name}</span>
+                        <span className="text-[15px] font-medium capitalize text-[#3b3226] dark:text-[#f5ede0]">
+                          {supplement.name}
+                        </span>
                       </span>
-                      <div className="flex shrink-0 gap-1.5" role="group" aria-label={`${supplement.name} taken today?`}>
+                      <div
+                        className="flex shrink-0 gap-1.5"
+                        role="group"
+                        aria-label={`${supplement.name} taken today?`}
+                      >
                         {[
                           { label: "Yes", taken: true },
                           { label: "No", taken: false },
@@ -299,15 +324,18 @@ export function QuickLogDialog({
                               type="button"
                               aria-pressed={active}
                               onClick={() => {
-                                setAnswers((current) => ({ ...current, [supplement.id]: option.taken }));
+                                setAnswers((current) => ({
+                                  ...current,
+                                  [supplement.id]: option.taken,
+                                }));
                                 setError("");
                               }}
                               className={`min-h-10 min-w-[58px] rounded-full px-3.5 text-[13.5px] font-medium transition-colors ${
                                 active
                                   ? option.taken
-                                    ? "bg-[#4a3f30] text-[#fffaf0]"
-                                    : "bg-[#9c3a29] text-[#fff7f2]"
-                                  : "border border-[#d8c6a4] bg-white/80 text-[#6f6149] hover:bg-white"
+                                    ? "bg-[#4a3f30] text-[#fffaf0] dark:bg-[#e5be79] dark:text-[#231b12]"
+                                    : "bg-[#9c3a29] text-[#fff7f2] dark:bg-[#c65a45]"
+                                  : "border border-[#d8c6a4] bg-white/80 text-[#6f6149] hover:bg-white dark:border-[#4a3c2c] dark:bg-[#231c15] dark:text-[#c7b69c] dark:hover:bg-[#2d241b]"
                               }`}
                             >
                               {option.label}
@@ -320,11 +348,15 @@ export function QuickLogDialog({
                 );
               })}
             </ul>
-            {error && <p role="alert" className="mt-3 text-[13px] text-[#9c3a29]">{error}</p>}
+            {error && (
+              <p role="alert" className="mt-3 text-[13px] text-[#9c3a29] dark:text-[#f08b75]">
+                {error}
+              </p>
+            )}
             <button
               type="button"
               onClick={saveSupplementAnswers}
-              className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a]"
+              className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a] dark:bg-[#e5be79] dark:text-[#231b12] dark:hover:bg-[#f0cf92]"
             >
               <Check size={17} strokeWidth={2} aria-hidden="true" />
               Complete
@@ -334,7 +366,7 @@ export function QuickLogDialog({
 
         {screen === "food" && (
           <div className="mt-5">
-            <p className="text-center text-[13.5px] leading-relaxed text-[#6f6149]">
+            <p className="text-center text-[13.5px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
               Select every food group you ate today.
             </p>
             <div className="mt-4 grid grid-cols-2 gap-2.5" role="group" aria-label="Food groups">
@@ -355,24 +387,43 @@ export function QuickLogDialog({
                     }}
                     className={`flex min-h-[64px] items-center gap-2.5 rounded-[18px] border px-3.5 py-3 text-left transition-colors ${
                       active
-                        ? "border-[#c9a35d] bg-[#fbe7b8]/80"
-                        : "border-white/70 bg-white/60 hover:bg-white/85"
+                        ? "border-[#c9a35d] bg-[#fbe7b8]/80 dark:border-[#e5be79] dark:bg-[#e5be79]/18"
+                        : "border-white/70 bg-white/60 hover:bg-white/85 dark:border-[#3d3123] dark:bg-[#19140f]/80 dark:hover:bg-[#241d15]"
                     } ${group.name === "Vegetables" ? "col-span-2" : ""}`}
                   >
-                    <span className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${active ? "bg-[#4a3f30] text-[#fbe7b8]" : "bg-[#d9ab5e]/15 text-[#7b5b2b]"}`}>
+                    <span
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full ${
+                        active
+                          ? "bg-[#4a3f30] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]"
+                          : "bg-[#d9ab5e]/15 text-[#7b5b2b] dark:bg-[#e5be79]/15 dark:text-[#e5be79]"
+                      }`}
+                    >
                       <group.Icon size={17} strokeWidth={1.8} aria-hidden="true" />
                     </span>
-                    <span className="min-w-0 flex-1 text-[14px] font-medium text-[#3b3226]">{group.name}</span>
-                    {active && <Check size={17} strokeWidth={2.2} className="shrink-0 text-[#6f5a35]" aria-hidden="true" />}
+                    <span className="min-w-0 flex-1 text-[14px] font-medium text-[#3b3226] dark:text-[#f5ede0]">
+                      {group.name}
+                    </span>
+                    {active && (
+                      <Check
+                        size={17}
+                        strokeWidth={2.2}
+                        className="shrink-0 text-[#6f5a35] dark:text-[#e5be79]"
+                        aria-hidden="true"
+                      />
+                    )}
                   </button>
                 );
               })}
             </div>
-            {error && <p role="alert" className="mt-3 text-[13px] text-[#9c3a29]">{error}</p>}
+            {error && (
+              <p role="alert" className="mt-3 text-[13px] text-[#9c3a29] dark:text-[#f08b75]">
+                {error}
+              </p>
+            )}
             <button
               type="button"
               onClick={saveFoodAnswers}
-              className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a]"
+              className="mt-5 flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a] dark:bg-[#e5be79] dark:text-[#231b12] dark:hover:bg-[#f0cf92]"
             >
               <Check size={17} strokeWidth={2} aria-hidden="true" />
               Complete
@@ -382,27 +433,33 @@ export function QuickLogDialog({
 
         {screen === "saved" && (
           <div className="mt-6 text-center" role="status" aria-live="polite">
-            <span className="danger-alert-in mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#4a3f30] text-[#fbe7b8]">
+            <span className="danger-alert-in mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#4a3f30] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]">
               <Save size={26} strokeWidth={2} aria-hidden="true" />
             </span>
-            <p className="mt-3 text-[16px] font-semibold text-[#3b3226]">Your log is saved</p>
-            <p className="mx-auto mt-1 max-w-[36ch] text-[13.5px] leading-relaxed text-[#6f6149]">
+            <p className="mt-3 text-[16px] font-semibold text-[#3b3226] dark:text-[#f5ede0]">
+              Your log is saved
+            </p>
+            <p className="mx-auto mt-1 max-w-[36ch] text-[13.5px] leading-relaxed text-[#6f6149] dark:text-[#c7b69c]">
               {savedSummary}
             </p>
-            <p className="mx-auto mt-2 max-w-[36ch] text-[12px] leading-relaxed text-[#85735a]">
+            <p className="mx-auto mt-2 max-w-[36ch] text-[12px] leading-relaxed text-[#85735a] dark:text-[#9c8b72]">
               It will be included in your next ANC report.
             </p>
             <button
               type="button"
               onClick={finish}
-              className="mt-5 min-h-12 w-full rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a]"
+              className="mt-5 min-h-12 w-full rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a] dark:bg-[#e5be79] dark:text-[#231b12] dark:hover:bg-[#f0cf92]"
             >
               Done
             </button>
             <button
               type="button"
-              onClick={() => { setSavedSummary(""); setError(""); setScreen("choose"); }}
-              className="mt-2 min-h-11 w-full rounded-full px-6 text-[13.5px] font-medium text-[#6f5a35] underline decoration-[#b98a3e]/50 underline-offset-4 transition hover:text-[#3b3226]"
+              onClick={() => {
+                setSavedSummary("");
+                setError("");
+                setScreen("choose");
+              }}
+              className="mt-2 min-h-11 w-full rounded-full px-6 text-[13.5px] font-medium text-[#6f5a35] underline decoration-[#b98a3e]/50 underline-offset-4 transition hover:text-[#3b3226] dark:text-[#dfb870] dark:hover:text-[#f5ede0]"
             >
               Log something else
             </button>

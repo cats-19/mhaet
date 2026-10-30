@@ -111,7 +111,7 @@ export function SupplementAdherence({ supplements }: { supplements: SupplementRe
         })}
       </ul>
 
-      <p className="mt-3 text-[12px] leading-relaxed text-[#6f6149]">
+      <p className="mt-3 text-[12px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
         Based on logged days. Unlogged days aren't counted as missed.
       </p>
     </div>

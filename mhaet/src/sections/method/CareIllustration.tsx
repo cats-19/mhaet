@@ -97,9 +97,16 @@ function Defs({ uid }: { uid: string }) {
 /** Soft champagne pool behind each drawing so it melts into the page. */
 function Backdrop({ uid }: { uid: string }) {
   return (
-    <g filter={`url(#glow-${uid})`} opacity="0.55">
-      <ellipse cx="200" cy="210" rx="150" ry="130" fill="#f6dfb2" />
-      <ellipse cx="240" cy="250" rx="100" ry="80" fill="#eec584" opacity="0.6" />
+    <g filter={`url(#glow-${uid})`} className="opacity-55 dark:opacity-20">
+      <ellipse cx="200" cy="210" rx="150" ry="130" className="fill-[#f6dfb2] dark:fill-[#c99642]" />
+      <ellipse
+        cx="240"
+        cy="250"
+        rx="100"
+        ry="80"
+        className="fill-[#eec584] dark:fill-[#8d6224]"
+        opacity="0.6"
+      />
     </g>
   );
 }

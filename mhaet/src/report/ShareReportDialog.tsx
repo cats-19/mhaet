@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Copy, Download, Heart, Share2, X } from "lucide-react";
+import { Copy, Download, Share2, X } from "lucide-react";
+import { BrandMark } from "../components/BrandMark";
 import { QRCodeSVG } from "qrcode.react";
 
 type CopyState = "idle" | "copied" | "manual";
@@ -150,23 +151,23 @@ export function ShareReportDialog({
       <div
         aria-hidden="true"
         data-share-backdrop
-        className="pointer-events-none absolute inset-0 bg-[#3b3226]/30 backdrop-blur-md"
+        className="pointer-events-none absolute inset-0 bg-[#3b3226]/30 dark:bg-black/72 backdrop-blur-md"
       />
       <div
         ref={panelRef}
         data-share-panel
-        className="report-sheet relative max-h-[calc(100dvh-2rem)] w-full max-w-[440px] overflow-y-auto overscroll-contain rounded-[30px] border border-white/80 bg-[#fbf6ec]/[0.98] p-6 shadow-[0_18px_60px_-20px_rgba(85,55,18,0.5)] backdrop-blur-xl"
+        className="report-sheet relative max-h-[calc(100dvh-2rem)] w-full max-w-[440px] overflow-y-auto overscroll-contain rounded-[30px] border border-white/80 bg-[#fbf6ec]/[0.98] p-6 shadow-[0_18px_60px_-20px_rgba(85,55,18,0.5)] backdrop-blur-xl dark:border-[#e5be79]/22 dark:bg-[#221c15]/[0.98] dark:shadow-[0_24px_64px_-18px_rgba(0,0,0,0.88)]"
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2
               id="share-report-title"
-              className="text-[24px] font-medium tracking-tight text-[#3b3226]"
+              className="text-[24px] font-medium tracking-tight text-[#3b3226] dark:text-[#f5ede0]"
             >
               Share report
             </h2>
-            <p className="mt-1.5 text-[13px] leading-relaxed text-[#6f6149]">
+            <p className="mt-1.5 text-[13px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
               Your {appointment} · open on any device
             </p>
           </div>
@@ -175,42 +176,45 @@ export function ShareReportDialog({
             type="button"
             onClick={onClose}
             aria-label="Close share dialog"
-            className="home-icon-solid flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#4a3f30] transition hover:border-[#c9a35d]/70 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a]"
+            className="home-icon-solid flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-[#4a3f30] dark:text-[#f0e4ce] transition hover:border-[#c9a35d]/70 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:focus-visible:outline-[#e5be79]"
           >
             <X size={19} strokeWidth={1.8} />
           </button>
         </div>
 
-        {/* QR code */}
-        <div className="mt-6 rounded-[24px] border border-[#e7d7ba] bg-white/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+        {/* QR code — kept on a warm ivory quiet-zone mat so phone cameras scan reliably in any theme */}
+        <div className="mt-6 rounded-[24px] border border-[#e7d7ba] bg-white/80 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.9)] dark:border-[#e5be79]/25 dark:bg-[#19140f]/90 dark:shadow-none">
           <div
             ref={qrRef}
-            className="relative mx-auto w-[216px] max-w-full [&_svg]:h-auto [&_svg]:w-full"
+            className="relative mx-auto w-[216px] max-w-full overflow-hidden rounded-2xl bg-[#fffdf8] p-2.5 [&_svg]:h-auto [&_svg]:w-full"
           >
             <QRCodeSVG
               value={url}
               size={216}
               level="H"
-              marginSize={2}
+              marginSize={1}
               bgColor="#fffdf8"
               fgColor="#3b3226"
               title={`QR code for the Aurelia ANC report — ${appointment}`}
             />
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute left-1/2 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#fbf6ec] text-[#a87a3d] ring-4 ring-[#fbf6ec]"
+              className="pointer-events-none absolute left-1/2 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#fffdf8] text-[#a87a3d] ring-4 ring-[#fffdf8]"
             >
-              <Heart size={16} strokeWidth={2} fill="currentColor" />
+              <BrandMark className="h-[18px] w-[18px]" strokeWidth={1.9} />
             </span>
           </div>
-          <p className="mt-3 text-center text-[12.5px] leading-relaxed text-[#6f6149]">
+          <p className="mt-3 text-center text-[12.5px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">
             Scan with a phone camera to open the report
           </p>
         </div>
 
         {/* Link */}
         <div className="mt-4">
-          <label htmlFor="share-report-link" className="block text-[12px] font-medium uppercase tracking-[0.12em] text-[#8d6a2a]">
+          <label
+            htmlFor="share-report-link"
+            className="block text-[12px] font-medium uppercase tracking-[0.12em] text-[#8d6a2a] dark:text-[#dfb870]"
+          >
             Report link
           </label>
           <div className="mt-2">
@@ -221,10 +225,13 @@ export function ShareReportDialog({
               readOnly
               value={url}
               onFocus={(event) => event.currentTarget.select()}
-              className="min-h-11 w-full min-w-0 rounded-xl border border-[#d8c6a4] bg-white/90 px-3 py-2 text-[12.5px] text-[#4a3f30] outline-none focus:border-[#a87a3d]"
+              className="min-h-11 w-full min-w-0 rounded-xl border border-[#d8c6a4] bg-white/90 px-3 py-2 text-[12.5px] text-[#4a3f30] outline-none focus:border-[#a87a3d] dark:border-[#4a3c2c] dark:bg-[#18130e] dark:text-[#dfcfb6] dark:focus:border-[#e5be79]"
             />
           </div>
-          <p aria-live="polite" className="mt-2 min-h-5 text-[12.5px] text-[#6f5a35]">
+          <p
+            aria-live="polite"
+            className="mt-2 min-h-5 text-[12.5px] text-[#6f5a35] dark:text-[#e5be79]"
+          >
             {copyState === "copied"
               ? "Link copied to your clipboard."
               : copyState === "manual"
@@ -238,7 +245,7 @@ export function ShareReportDialog({
           <button
             type="button"
             onClick={copyLink}
-            className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a]"
+            className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#4a3f30] px-6 py-3.5 text-[14.5px] font-medium text-[#fffaf0] transition hover:bg-[#655039] active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#8d6a2a] dark:bg-[#e5be79] dark:text-[#231b12] dark:hover:bg-[#f0cf92]"
           >
             <Copy size={17} strokeWidth={1.9} aria-hidden="true" />
             Copy link
@@ -247,7 +254,7 @@ export function ShareReportDialog({
             <button
               type="button"
               onClick={shareNative}
-              className="flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#d8c6a4] bg-white/60 px-4 py-3 text-[13.5px] font-medium text-[#6f5a35] transition hover:bg-white/85 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a]"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#d8c6a4] bg-white/60 px-4 py-3 text-[13.5px] font-medium text-[#6f5a35] transition hover:bg-white/85 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:border-[#4a3c2c] dark:bg-[#1b1510] dark:text-[#dfcfb6] dark:hover:bg-[#271f17]"
             >
               <Share2 size={16} strokeWidth={1.8} aria-hidden="true" />
               Share…
@@ -255,20 +262,20 @@ export function ShareReportDialog({
             <button
               type="button"
               onClick={downloadQr}
-              className="flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#d8c6a4] bg-white/60 px-4 py-3 text-[13.5px] font-medium text-[#6f5a35] transition hover:bg-white/85 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a]"
+              className="flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#d8c6a4] bg-white/60 px-4 py-3 text-[13.5px] font-medium text-[#6f5a35] transition hover:bg-white/85 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:border-[#4a3c2c] dark:bg-[#1b1510] dark:text-[#dfcfb6] dark:hover:bg-[#271f17]"
             >
               <Download size={16} strokeWidth={1.8} aria-hidden="true" />
               Save QR
             </button>
           </div>
           {shareFailed && (
-            <p role="alert" className="text-center text-[12.5px] text-[#9c3a29]">
+            <p role="alert" className="text-center text-[12.5px] text-[#9c3a29] dark:text-[#f08b75]">
               Sharing isn't available on this device. Copy the link instead.
             </p>
           )}
         </div>
 
-        <p className="mt-4 text-center text-[11.5px] leading-relaxed text-[#8d7a5c]">
+        <p className="mt-4 text-center text-[11.5px] leading-relaxed text-[#8d7a5c] dark:text-[#9c8b72]">
           Only share this with your care team. Anyone with the link or QR code can open the report.
         </p>
       </div>
