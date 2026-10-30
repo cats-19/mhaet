@@ -14,6 +14,19 @@ const nextConfig: NextConfig = {
   // one output dir leaves the dev server serving stale manifests/chunks.
   // `npm run build` sets NEXT_DIST_DIR=.next-build.
   distDir: process.env.NEXT_DIST_DIR || ".next",
+
+  // Preview proxies and browsers were holding on to earlier documents, which
+  // made freshly changed UI look unchanged. Nothing here is worth caching.
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Cache-Control", value: "no-store, must-revalidate" },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
