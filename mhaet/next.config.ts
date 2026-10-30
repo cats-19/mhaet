@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
     "localhost",
     "127.0.0.1",
   ],
+
+  // Keep production builds out of `.next` while `next dev` is running — sharing
+  // one output dir leaves the dev server serving stale manifests/chunks.
+  // `npm run build` sets NEXT_DIST_DIR=.next-build.
+  distDir: process.env.NEXT_DIST_DIR || ".next",
 };
 
 export default nextConfig;
