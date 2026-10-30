@@ -11,6 +11,16 @@
   --font-sans: "Outfit", "Noto Sans Ethiopic", ui-sans-serif, system-ui, sans-serif;
 }
 
+/* Brand mark: the veins are cut with the badge colour, so the same SVG
+   works on the ink badge (light) and the gold badge (dark). */
+:root {
+  --brand-mark-cut: #3b3226;
+}
+
+html.dark {
+  --brand-mark-cut: #e5be79;
+}
+
 html, body {
   font-family: var(--font-sans);
   background: #e9e3d8;
