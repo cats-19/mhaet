@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -14,7 +16,7 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import { BrandMark } from "../components/BrandMark";
+import { LeafMark } from "../components/LeafMark";
 import { ThemeSelect } from "../components/ThemeSelect";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import {
@@ -33,10 +35,12 @@ import {
   lmpToGregorian,
   saveOnboarding,
   type CalendarSystem,
+  EMPTY_ONBOARDING,
   type DatingMode,
   type OnboardingData,
   type Residence,
 } from "./onboardingStore";
+import { useRouter } from "next/navigation";
 
 type Stage = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 type Screen = "welcome" | Stage | "complete";
@@ -433,8 +437,12 @@ function OnboardingComplete({ onDone }: { onDone: () => void }) {
 /* ------------------------------------------------------------------ */
 
 export function OnboardingPage() {
-  const [data, setData] = useState<OnboardingData>(() => loadOnboarding());
-  const [screen, setScreen] = useState<Screen>(() => (loadOnboarding().completed ? 1 : "welcome"));
+  const router = useRouter();
+  // Server-rendered markup uses the blank flow; the saved answers are applied
+  // on mount so hydration always matches.
+  const [data, setData] = useState<OnboardingData>(EMPTY_ONBOARDING);
+  const [hydrated, setHydrated] = useState(false);
+  const [screen, setScreen] = useState<Screen>("welcome");
   const [stage, setStage] = useState<Stage>(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [leaving, setLeaving] = useState(false);
@@ -446,8 +454,17 @@ export function OnboardingPage() {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const stored = loadOnboarding();
+    setData(stored);
+    setScreen(stored.completed ? 1 : "welcome");
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    // Never write before the stored answers have been read back in.
+    if (!hydrated) return;
     saveOnboarding(data);
-  }, [data]);
+  }, [data, hydrated]);
 
   const update = (patch: Partial<OnboardingData>) => {
     setData((current) => ({ ...current, ...patch }));
@@ -684,7 +701,7 @@ export function OnboardingPage() {
           {screen === "welcome" ? (
             <div className="flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]">
-                <BrandMark className="h-4 w-4" strokeWidth={1.9} />
+                <LeafMark className="h-[23px] w-[23px]" />
               </span>
               <span className="text-[16px] font-medium tracking-tight text-[#4a3f30] dark:text-[#f5ede0]">
                 aurelia
@@ -1502,7 +1519,7 @@ export function OnboardingPage() {
               {screen === "complete" && (
                 <OnboardingComplete
                   onDone={() => {
-                    window.location.hash = "#home";
+                    router.push("/home");
                   }}
                 />
               )}

@@ -39,9 +39,10 @@ function writeLanguage(code: LanguageCode) {
 }
 
 export function useLanguage() {
-  const [language, setLanguageState] = useState<LanguageCode>(readLanguage);
+  const [language, setLanguageState] = useState<LanguageCode>("en");
 
   useEffect(() => {
+    setLanguageState(readLanguage());
     const onChange = (event: Event) => {
       const next = (event as CustomEvent<LanguageCode>).detail;
       if (next === "en" || next === "am") setLanguageState(next);

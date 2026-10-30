@@ -2,8 +2,11 @@ node_modules/
 dist/
 build/
 .next/
+.next-build/
 out/
 .vite/
 *.local
 .DS_Store
 *.log
+.turbo/
+*.tsbuildinfo

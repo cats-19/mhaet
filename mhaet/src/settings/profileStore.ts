@@ -63,9 +63,12 @@ function write(profile: Profile) {
 
 /** Shared profile state. All components using this hook stay in sync. */
 export function useProfile() {
-  const [profile, setProfile] = useState<Profile>(read);
+  // Start from the default profile so the server and the first client render
+  // agree, then hydrate the saved profile once mounted.
+  const [profile, setProfile] = useState<Profile>(DEFAULT_PROFILE);
 
   useEffect(() => {
+    setProfile(read());
     const onChange = (event: Event) => {
       const next = (event as CustomEvent<Profile>).detail;
       if (next) setProfile(next);

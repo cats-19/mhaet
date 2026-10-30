@@ -1,9 +1,14 @@
+"use client";
+
 import { ArrowUpRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import type { CSSProperties } from "react";
 import { BottomNav, HomeTopBar } from "../home/HomeDashboard";
 import { REPORT_ARCHIVE } from "./reportCatalog";
 
 export function ReportsList() {
+  const router = useRouter();
+
   return (
     <div className="relative min-h-[100dvh] w-full overflow-hidden bg-[#f3ecdf] text-[#4a3f30] dark:bg-[#15120e] dark:text-[#f0e4ce]">
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -35,7 +40,7 @@ export function ReportsList() {
                 type="button"
                 data-dashboard-card
                 onClick={() => {
-                  window.location.hash = `#report/${report.id}`;
+                  router.push(`/report/${report.id}`);
                 }}
                 className={`report-list-card group relative overflow-hidden rounded-[26px] border p-5 text-left shadow-[0_14px_34px_-23px_rgba(112,78,28,0.48)] backdrop-blur-xl transition hover:-translate-y-0.5 active:scale-[0.99] focus-visible:outline-2 focus-visible:outline-offset-2 motion-reduce:transition-none dark:shadow-[0_18px_40px_-22px_rgba(0,0,0,0.82)] ${
                   hasDanger

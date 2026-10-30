@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import {
   Bell,
@@ -18,6 +20,7 @@ import { BottomNav } from "../home/HomeDashboard";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { useProfile, type Supplement } from "./profileStore";
 import { useTheme, type Theme } from "../theme/themeStore";
+import { useRouter } from "next/navigation";
 
 function formatDate(value: string) {
   if (!value) return "Not set";
@@ -564,6 +567,7 @@ function ConfirmDialog({
 /* ------------------------------------------------------------------ */
 
 export function SettingsPage() {
+  const router = useRouter();
   const { profile, update, resetAll } = useProfile();
   const { theme, setTheme } = useTheme();
   const [editingName, setEditingName] = useState(false);
@@ -592,7 +596,7 @@ export function SettingsPage() {
   }, [message]);
 
   const goBack = () => {
-    window.location.hash = "#home";
+    router.push("/home");
   };
 
   const saveName = (name: string) => {
@@ -886,7 +890,7 @@ export function SettingsPage() {
           onCancel={() => setConfirm(null)}
           onConfirm={() => {
             setConfirm(null);
-            window.location.hash = "";
+            router.replace("/");
           }}
         />
       )}
@@ -901,7 +905,7 @@ export function SettingsPage() {
           onConfirm={() => {
             resetAll();
             setConfirm(null);
-            window.location.hash = "";
+            router.replace("/");
           }}
         />
       )}

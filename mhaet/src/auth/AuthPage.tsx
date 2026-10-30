@@ -1,7 +1,8 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
-  Check,
   ChevronLeft,
   Eye,
   EyeOff,
@@ -11,9 +12,10 @@ import {
   Mail,
   User,
 } from "lucide-react";
-import { BrandMark } from "../components/BrandMark";
+import { LeafMark } from "../components/LeafMark";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { useProfile } from "../settings/profileStore";
+import { useRouter } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
 /* Lightweight prototype accounts (stored locally, never sent anywhere) */
@@ -51,7 +53,7 @@ function Brand() {
   return (
     <div className="flex items-center gap-2">
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]">
-        <BrandMark className="h-[18px] w-[18px]" />
+        <LeafMark className="h-[25px] w-[25px]" />
       </span>
       <span className="text-[18px] font-medium tracking-tight text-[#4a3f30] dark:text-[#f5ede0]">
         aurelia
@@ -176,6 +178,7 @@ type Mode = "login" | "register";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
+  const router = useRouter();
   const { update } = useProfile();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [firstName, setFirstName] = useState("");
@@ -183,7 +186,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
   const [swap, setSwap] = useState(false);
   const timerRef = useRef<number | null>(null);
@@ -200,17 +202,15 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
   useEffect(() => {
     setMode(initialMode);
     setErrors({});
-    setNotice("");
   }, [initialMode]);
 
   const switchMode = (next: Mode) => {
     if (next === mode) return;
     setSwap(true);
     setErrors({});
-    setNotice("");
     timerRef.current = window.setTimeout(() => {
       // Change the real route so the URL, back button and app state stay in sync.
-      window.location.hash = next === "login" ? "#login" : "#register";
+      router.push(next === "login" ? "/login" : "/register");
       setPassword("");
       setSwap(false);
     }, 180);
@@ -233,7 +233,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setNotice("");
     if (!validate()) return;
     setLoading(true);
 
@@ -255,11 +254,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
         };
         saveAccounts([...accounts, account]);
         update({ name: `${account.firstName} ${account.lastName}`, email: normalisedEmail });
-        setLoading(false);
-        setNotice("Account created. Let's set up your care…");
+        // No confirmation pill here — the button keeps its loading state and we
+        // move straight into onboarding.
         timerRef.current = window.setTimeout(() => {
-          window.location.hash = "#onboarding";
-        }, 800);
+          router.push("/onboarding");
+        }, 600);
         return;
       }
 
@@ -274,10 +273,9 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
         return;
       }
       update({ name: `${account.firstName} ${account.lastName}`, email: account.email });
-      setLoading(false);
-      setNotice("Welcome back. Preparing your space…");
+      // Keep the button in its loading state; the splash screen takes over.
       timerRef.current = window.setTimeout(() => {
-        window.location.hash = "#splash";
+        router.push("/splash");
       }, 700);
     }, 750);
   };
@@ -405,16 +403,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
               </p>
             )}
 
-            {notice && (
-              <p
-                role="status"
-                className="mt-4 flex items-start gap-2 rounded-2xl border border-[#c9a35d]/40 bg-[#fbe7b8]/50 px-3.5 py-2.5 text-[13px] leading-relaxed text-[#6f5a35] dark:border-[#e5be79]/35 dark:bg-[#e5be79]/16 dark:text-[#e5be79]"
-              >
-                <Check size={15} strokeWidth={2.4} className="mt-0.5 shrink-0" aria-hidden="true" />
-                {notice}
-              </p>
-            )}
-
             <div className="mt-5">
               <SubmitButton loading={loading} label={isRegister ? "Create account" : "Sign in"} />
             </div>
@@ -434,7 +422,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
               <button
                 type="button"
                 onClick={() => {
-                  window.location.hash = isRegister ? "#onboarding" : "#splash";
+                  router.push(isRegister ? "/onboarding" : "/splash");
                 }}
                 className="rounded-full px-3 py-1.5 text-[12.5px] font-medium text-[#9b8a6f] underline decoration-[#c9a35d]/40 underline-offset-4 transition-colors hover:text-[#4a3f30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:text-[#9c8b72] dark:hover:text-[#f5ede0] dark:focus-visible:outline-[#e5be79]"
               >
