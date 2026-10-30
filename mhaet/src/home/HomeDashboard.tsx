@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeft,
@@ -15,6 +17,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
+import { usePathname, useRouter } from "next/navigation";
 import { useProfile } from "../settings/profileStore";
 import { useNotifications } from "../notifications/notificationsData";
 import { ShareReportDialog } from "../report/ShareReportDialog";
@@ -150,6 +153,7 @@ function ProgressRing({ value, max, label }: { value: number; max: number; label
 /* ------------------------------------------------------------------ */
 
 export function HomeTopBar({ now = new Date() }: { now?: Date }) {
+  const router = useRouter();
   const { profile } = useProfile();
   const { unreadCount } = useNotifications();
   return (
@@ -157,7 +161,7 @@ export function HomeTopBar({ now = new Date() }: { now?: Date }) {
       <button
         type="button"
         onClick={() => {
-          window.location.hash = "#settings";
+          router.push("/settings");
         }}
         aria-label="Open settings"
         className="flex items-center gap-3 rounded-full text-left transition active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:focus-visible:outline-[#e5be79]"
@@ -180,7 +184,7 @@ export function HomeTopBar({ now = new Date() }: { now?: Date }) {
           label={`Notifications${unreadCount > 0 ? `, ${unreadCount} unread` : ""}`}
           dot={unreadCount > 0}
           onClick={() => {
-            window.location.hash = "#notifications";
+            router.push("/notifications");
           }}
         >
           <Bell size={19} strokeWidth={1.8} />
@@ -225,6 +229,7 @@ function TopSection({ now }: { now: Date }) {
 }
 
 function StatsSection({ now }: { now: Date }) {
+  const router = useRouter();
   const day = WEEKDAY_SHORT[now.getDay()];
   const [shareOpen, setShareOpen] = useState(false);
   const [logOpen, setLogOpen] = useState(false);
@@ -291,7 +296,7 @@ function StatsSection({ now }: { now: Date }) {
             type="button"
             data-dashboard-card
             onClick={() => {
-              window.location.hash = "#voice";
+              router.push("/voice");
             }}
             className="home-card-solid group flex flex-col justify-center rounded-[30px] px-5 py-5 text-left ring-1 ring-[#c9a35d]/45 transition hover:ring-[#c9a35d]/80 active:scale-[0.98] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:ring-[#e5be79]/35 dark:hover:ring-[#e5be79]/70 dark:focus-visible:outline-[#e5be79]"
           >
@@ -477,6 +482,8 @@ function CalendarSection({ now }: { now: Date }) {
 export type NavKey = "home" | "calendar" | "report" | "checkin";
 
 export function BottomNav({ current = "home" }: { current?: NavKey }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [active, setActive] = useState<NavKey>(current);
 
   useEffect(() => {
@@ -555,11 +562,11 @@ export function BottomNav({ current = "home" }: { current?: NavKey }) {
         }`}
       >
         {item("home", "Home", <Home size={19} strokeWidth={1.9} />, () => {
-          if (window.location.hash === "#home") window.scrollTo({ top: 0, behavior: "smooth" });
-          else window.location.hash = "#home";
+          if (pathname === "/home") window.scrollTo({ top: 0, behavior: "smooth" });
+          else router.push("/home");
         })}
         {item("calendar", "Calendar", <CalendarDays size={19} strokeWidth={1.8} />, () => {
-          window.location.hash = "#calendar";
+          router.push("/calendar");
         })}
 
         {/* Voice assistant */}
@@ -567,7 +574,7 @@ export function BottomNav({ current = "home" }: { current?: NavKey }) {
           type="button"
           aria-label="Start voice check-in"
           onClick={() => {
-            window.location.hash = "#voice";
+            router.push("/voice");
           }}
           className="relative mx-1 flex h-16 w-16 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] shadow-[0_10px_24px_-10px_rgba(60,45,25,0.7)] transition active:scale-95 dark:bg-[#e5be79] dark:text-[#231b12] dark:shadow-[0_10px_26px_-8px_rgba(229,190,121,0.45)]"
         >
@@ -575,10 +582,10 @@ export function BottomNav({ current = "home" }: { current?: NavKey }) {
         </button>
 
         {item("report", "ANC report", <FileText size={19} strokeWidth={1.8} />, () => {
-          window.location.hash = "#reports";
+          router.push("/reports");
         })}
         {item("checkin", "Check-in logs", <ListChecks size={19} strokeWidth={1.8} />, () => {
-          window.location.hash = "#logs";
+          router.push("/logs");
         })}
       </div>
     </nav>

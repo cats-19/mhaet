@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, type CSSProperties } from "react";
 import { AlertTriangle, ChevronRight, Mic } from "lucide-react";
 import { BottomNav, HomeTopBar } from "../home/HomeDashboard";

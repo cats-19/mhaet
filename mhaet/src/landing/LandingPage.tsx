@@ -1,19 +1,12 @@
-import { useEffect, useState } from "react";
-import { NextDotFillButton } from "./components/NextDotFillButton";
-import { MethodSection } from "./sections/MethodSection";
-import { Footer } from "./sections/Footer";
-import { HeroArt } from "./sections/HeroArt";
-import { HomeDashboard } from "./home/HomeDashboard";
-import { VoiceCheckin } from "./voice/VoiceCheckin";
-import { AncReport } from "./report/AncReport";
-import { ReportsList } from "./report/ReportsList";
-import { CheckinLogs } from "./logs/CheckinLogs";
-import { CalendarPage } from "./calendar/CalendarPage";
-import { SettingsPage } from "./settings/SettingsPage";
-import { NotificationsPage } from "./notifications/NotificationsPage";
-import { AuthPage } from "./auth/AuthPage";
-import { SplashPage } from "./auth/SplashPage";
-import { OnboardingPage } from "./onboarding/OnboardingPage";
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { NextDotFillButton } from "../components/NextDotFillButton";
+import { Footer } from "../sections/Footer";
+import { HeroArt } from "../sections/HeroArt";
+import { MethodSection } from "../sections/MethodSection";
 
 const navItems = ["Welcome", "Care", "Journey", "Contact"] as const;
 
@@ -25,44 +18,11 @@ const NAV_TARGETS: Record<(typeof navItems)[number], string> = {
   Contact: "contact",
 };
 
-/** Tiny hash router for the landing page and app prototype screens. */
-function useHashRoute() {
-  const [hash, setHash] = useState(() => window.location.hash);
-  useEffect(() => {
-    const onChange = () => {
-      setHash(window.location.hash);
-      window.scrollTo({ top: 0 });
-    };
-    window.addEventListener("hashchange", onChange);
-    return () => window.removeEventListener("hashchange", onChange);
-  }, []);
-  return hash;
-}
-
-export default function App() {
-  const route = useHashRoute();
-  if (route === "#home") return <HomeDashboard />;
-  if (route === "#voice") return <VoiceCheckin />;
-  if (route === "#reports") return <ReportsList />;
-  if (route === "#logs") return <CheckinLogs />;
-  if (route === "#calendar") return <CalendarPage />;
-  if (route === "#settings") return <SettingsPage />;
-  if (route === "#notifications") return <NotificationsPage />;
-  if (route === "#login") return <AuthPage initialMode="login" />;
-  if (route === "#register") return <AuthPage initialMode="register" />;
-  if (route === "#splash") return <SplashPage />;
-  if (route === "#onboarding") return <OnboardingPage />;
-  if (route === "#report") return <AncReport reportId="third-appointment" />;
-  if (route.startsWith("#report/")) {
-    return <AncReport reportId={decodeURIComponent(route.slice("#report/".length))} />;
-  }
-  return <Landing />;
-}
-
-function Landing() {
+export function LandingPage() {
   const [active, setActive] = useState("Welcome");
   const [menuOpen, setMenuOpen] = useState(false);
   const [showJourneyModal, setShowJourneyModal] = useState(false);
+  const router = useRouter();
 
   /** Nav items scroll to their section instead of touching the hash router. */
   const goTo = (item: (typeof navItems)[number]) => {
@@ -131,12 +91,12 @@ function Landing() {
               aurelia
             </a>
 
-            <a
-              href="#home"
+            <Link
+              href="/home"
               className="rounded-full bg-white/90 px-5 py-2.5 text-[13px] font-medium text-[#3d3326] shadow-[0_8px_30px_-10px_rgba(180,140,70,0.45)] backdrop-blur transition hover:bg-white hover:shadow-[0_12px_40px_-10px_rgba(180,140,70,0.6)] dark:border dark:border-[#e5be79]/28 dark:bg-[#2a2118]/90 dark:text-[#f5ede0] dark:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.8)] dark:hover:bg-[#352a1e]"
             >
               Join the waitlist
-            </a>
+            </Link>
           </header>
 
           {menuOpen && (
@@ -189,7 +149,7 @@ function Landing() {
               <NextDotFillButton
                 label="Begin your journey"
                 onClick={() => {
-                  window.location.hash = "#login";
+                  router.push("/login");
                 }}
               />
             </div>

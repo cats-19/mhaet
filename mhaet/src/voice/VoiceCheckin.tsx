@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import {
   AlertTriangle,
@@ -14,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { CheckinReportSheet, severityLabel, type CheckinEntry } from "../components/CheckinReportSheet";
+import { useRouter } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
 /* Sample check-in conversation (the prototype "hears" these)          */
@@ -316,6 +319,7 @@ const STATUS: Record<Phase | "done", string> = {
 };
 
 export function VoiceCheckin() {
+  const router = useRouter();
   const [questionIndex, setQuestionIndex] = useState(0);
   const [phase, setPhase] = useState<Phase>("asking");
   const [draft, setDraft] = useState("");
@@ -365,7 +369,7 @@ export function VoiceCheckin() {
   };
 
   const goHome = () => {
-    window.location.hash = "#home";
+    router.push("/home");
   };
 
   /** Start capturing an answer for the current question. */

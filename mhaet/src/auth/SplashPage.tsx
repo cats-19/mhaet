@@ -1,5 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { BrandMark } from "../components/BrandMark";
 
 const MESSAGES = [
@@ -10,16 +13,6 @@ const MESSAGES = [
 
 const DURATION_MS = 3200;
 
-/** Move to home without leaving the splash in history (avoids a back-button loop). */
-function goHome() {
-  try {
-    window.history.replaceState(null, "", "#home");
-    window.dispatchEvent(new HashChangeEvent("hashchange"));
-  } catch {
-    window.location.hash = "#home";
-  }
-}
-
 /**
  * Single-state loading screen shown right after sign-in.
  * Logo at the center, app name beneath it, and gentle motion
@@ -27,9 +20,11 @@ function goHome() {
  */
 export function SplashPage() {
   const [messageIndex, setMessageIndex] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
-    const advance = window.setTimeout(goHome, DURATION_MS);
+    // `replace` keeps the splash out of history so Back never loops through it.
+    const advance = window.setTimeout(() => router.replace("/home"), DURATION_MS);
     const rotate = window.setInterval(() => {
       setMessageIndex((current) => (current + 1) % MESSAGES.length);
     }, 1100);
@@ -37,7 +32,7 @@ export function SplashPage() {
       window.clearTimeout(advance);
       window.clearInterval(rotate);
     };
-  }, []);
+  }, [router]);
 
   return (
     <div className="relative flex min-h-[100dvh] w-full flex-col overflow-hidden bg-[#f3ecdf] text-[#4a3f30] dark:bg-[#15120e] dark:text-[#f0e4ce]">
@@ -91,7 +86,7 @@ export function SplashPage() {
 
         <button
           type="button"
-          onClick={goHome}
+          onClick={() => router.replace("/home")}
           className="group mt-6 inline-flex min-h-11 items-center gap-1.5 rounded-full px-4 text-[13px] font-medium text-[#8d6a2a] underline decoration-[#c9a35d]/60 underline-offset-4 transition-colors hover:text-[#4a3f30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:text-[#e5be79] dark:hover:text-[#f5ede0] dark:focus-visible:outline-[#e5be79]"
         >
           Continue

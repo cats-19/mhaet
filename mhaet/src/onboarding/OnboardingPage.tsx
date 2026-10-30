@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -33,10 +35,12 @@ import {
   lmpToGregorian,
   saveOnboarding,
   type CalendarSystem,
+  EMPTY_ONBOARDING,
   type DatingMode,
   type OnboardingData,
   type Residence,
 } from "./onboardingStore";
+import { useRouter } from "next/navigation";
 
 type Stage = 1 | 2 | 3 | 4 | 5 | 6 | 7;
 type Screen = "welcome" | Stage | "complete";
@@ -433,8 +437,12 @@ function OnboardingComplete({ onDone }: { onDone: () => void }) {
 /* ------------------------------------------------------------------ */
 
 export function OnboardingPage() {
-  const [data, setData] = useState<OnboardingData>(() => loadOnboarding());
-  const [screen, setScreen] = useState<Screen>(() => (loadOnboarding().completed ? 1 : "welcome"));
+  const router = useRouter();
+  // Server-rendered markup uses the blank flow; the saved answers are applied
+  // on mount so hydration always matches.
+  const [data, setData] = useState<OnboardingData>(EMPTY_ONBOARDING);
+  const [hydrated, setHydrated] = useState(false);
+  const [screen, setScreen] = useState<Screen>("welcome");
   const [stage, setStage] = useState<Stage>(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [leaving, setLeaving] = useState(false);
@@ -446,8 +454,17 @@ export function OnboardingPage() {
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    const stored = loadOnboarding();
+    setData(stored);
+    setScreen(stored.completed ? 1 : "welcome");
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    // Never write before the stored answers have been read back in.
+    if (!hydrated) return;
     saveOnboarding(data);
-  }, [data]);
+  }, [data, hydrated]);
 
   const update = (patch: Partial<OnboardingData>) => {
     setData((current) => ({ ...current, ...patch }));
@@ -1502,7 +1519,7 @@ export function OnboardingPage() {
               {screen === "complete" && (
                 <OnboardingComplete
                   onDone={() => {
-                    window.location.hash = "#home";
+                    router.push("/home");
                   }}
                 />
               )}

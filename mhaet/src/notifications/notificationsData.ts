@@ -82,9 +82,11 @@ function saveStoredNotifications(items: NotificationItem[]) {
 }
 
 export function useNotifications() {
-  const [items, setItems] = useState<NotificationItem[]>(loadStoredNotifications);
+  // Deterministic first render for SSR; saved read/unread state arrives on mount.
+  const [items, setItems] = useState<NotificationItem[]>(INITIAL_NOTIFICATIONS);
 
   useEffect(() => {
+    setItems(loadStoredNotifications());
     const handler = (e: Event) => {
       const detail = (e as CustomEvent<NotificationItem[]>).detail;
       if (detail) setItems(detail);

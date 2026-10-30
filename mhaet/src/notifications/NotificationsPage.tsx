@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import {
   Bell,
@@ -8,6 +10,7 @@ import {
   Mic,
   Pill,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { BottomNav } from "../home/HomeDashboard";
 import { useNotifications, type NotificationItem } from "./notificationsData";
 
@@ -31,8 +34,10 @@ export function NotificationsPage() {
   const readItems = items.filter((n) => n.read);
   const currentList = tab === "unread" ? unreadItems : readItems;
 
+  const router = useRouter();
+
   const goBack = () => {
-    window.location.hash = "#home";
+    router.push("/home");
   };
 
   const getCategoryIcon = (category: NotificationItem["category"]) => {

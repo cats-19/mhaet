@@ -1,5 +1,8 @@
+"use client";
+
 import { useId, useMemo, useState, type CSSProperties, type ReactNode } from "react";
 import { AlertTriangle, ChevronLeft, FileText } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { SeverityCalendar, SymptomBars } from "./charts";
 import { FoodScoreDonut } from "./FoodScoreDonut";
@@ -25,6 +28,7 @@ const topSymptoms = SYMPTOM_TOTALS.slice(0, 4);
 const leading = topSymptoms[0];
 
 export function AncReport({ reportId }: { reportId?: string }) {
+  const router = useRouter();
   const report = getReportArchiveItem(reportId);
   const [selectedDay, setSelectedDay] = useState<DayRecord | null>(null);
   const symptomDetailsId = useId();
@@ -49,7 +53,7 @@ export function AncReport({ reportId }: { reportId?: string }) {
   );
 
   const goReports = () => {
-    window.location.hash = "#reports";
+    router.push("/reports");
   };
 
   return (

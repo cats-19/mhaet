@@ -193,10 +193,14 @@ export function setThemeWithTransition(next: Theme, origin?: ThemeOrigin) {
 
 /** Shared reactive theme hook. */
 export function useTheme() {
-  const [theme, setThemeState] = useState<Theme>(readStoredTheme);
+  // The pre-paint script has already put the right palette on <html>; React
+  // starts from "light" so SSR and hydration match, then syncs on mount.
+  const [theme, setThemeState] = useState<Theme>("light");
 
   useEffect(() => {
-    applyDomTheme(readStoredTheme());
+    const stored = readStoredTheme();
+    setThemeState(stored);
+    applyDomTheme(stored);
 
     const onChange = (event: Event) => {
       const next = (event as CustomEvent<Theme>).detail;

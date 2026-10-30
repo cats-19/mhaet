@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Tailwind v4 auto-detects sources from the project root; being explicit keeps
+   the app and shell folders in the scan even if ignore rules change. */
+@source ".";
+@source "../src";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {

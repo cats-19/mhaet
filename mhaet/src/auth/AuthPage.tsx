@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
@@ -14,6 +16,7 @@ import {
 import { BrandMark } from "../components/BrandMark";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import { useProfile } from "../settings/profileStore";
+import { useRouter } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
 /* Lightweight prototype accounts (stored locally, never sent anywhere) */
@@ -176,6 +179,7 @@ type Mode = "login" | "register";
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
+  const router = useRouter();
   const { update } = useProfile();
   const [mode, setMode] = useState<Mode>(initialMode);
   const [firstName, setFirstName] = useState("");
@@ -210,7 +214,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
     setNotice("");
     timerRef.current = window.setTimeout(() => {
       // Change the real route so the URL, back button and app state stay in sync.
-      window.location.hash = next === "login" ? "#login" : "#register";
+      router.push(next === "login" ? "/login" : "/register");
       setPassword("");
       setSwap(false);
     }, 180);
@@ -258,7 +262,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
         setLoading(false);
         setNotice("Account created. Let's set up your care…");
         timerRef.current = window.setTimeout(() => {
-          window.location.hash = "#onboarding";
+          router.push("/onboarding");
         }, 800);
         return;
       }
@@ -277,7 +281,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
       setLoading(false);
       setNotice("Welcome back. Preparing your space…");
       timerRef.current = window.setTimeout(() => {
-        window.location.hash = "#splash";
+        router.push("/splash");
       }, 700);
     }, 750);
   };
@@ -434,7 +438,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
               <button
                 type="button"
                 onClick={() => {
-                  window.location.hash = isRegister ? "#onboarding" : "#splash";
+                  router.push(isRegister ? "/onboarding" : "/splash");
                 }}
                 className="rounded-full px-3 py-1.5 text-[12.5px] font-medium text-[#9b8a6f] underline decoration-[#c9a35d]/40 underline-offset-4 transition-colors hover:text-[#4a3f30] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#8d6a2a] dark:text-[#9c8b72] dark:hover:text-[#f5ede0] dark:focus-visible:outline-[#e5be79]"
               >

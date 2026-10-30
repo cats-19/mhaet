@@ -53,9 +53,10 @@ function emit(name: string, detail: unknown) {
 
 /** Saved-by-hand supplement answers for today. Shared across the app. */
 export function useManualSupplements() {
-  const [items, setItems] = useState<SupplementLog[]>(readSupplements);
+  const [items, setItems] = useState<SupplementLog[]>([]);
 
   useEffect(() => {
+    setItems(readSupplements());
     const onChange = (event: Event) => {
       const detail = (event as CustomEvent<SupplementLog[]>).detail;
       if (Array.isArray(detail)) setItems(detail);
@@ -79,9 +80,10 @@ export function useManualSupplements() {
 
 /** Hand-logged food groups, one entry per day (latest overwrites the day). */
 export function useManualFood() {
-  const [items, setItems] = useState<FoodLog[]>(readFood);
+  const [items, setItems] = useState<FoodLog[]>([]);
 
   useEffect(() => {
+    setItems(readFood());
     const onChange = (event: Event) => {
       const detail = (event as CustomEvent<FoodLog[]>).detail;
       if (Array.isArray(detail)) setItems(detail);
