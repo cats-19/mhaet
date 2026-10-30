@@ -259,11 +259,11 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
         };
         saveAccounts([...accounts, account]);
         update({ name: `${account.firstName} ${account.lastName}`, email: normalisedEmail });
-        setLoading(false);
-        setNotice("Account created. Let's set up your care…");
+        // No confirmation pill here — the button keeps its loading state and we
+        // move straight into onboarding.
         timerRef.current = window.setTimeout(() => {
           router.push("/onboarding");
-        }, 800);
+        }, 600);
         return;
       }
 
