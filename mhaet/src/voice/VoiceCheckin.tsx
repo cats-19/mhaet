@@ -16,6 +16,7 @@ import {
   X,
 } from "lucide-react";
 import { CheckinReportSheet, severityLabel, type CheckinEntry } from "../components/CheckinReportSheet";
+import { VoiceOrb } from "./VoiceOrb";
 import { useRouter } from "next/navigation";
 
 /* ------------------------------------------------------------------ */
@@ -51,43 +52,6 @@ const SIMULATED_DANGER_SIGN = {
     "You described a headache lasting over 6 hours that rest hasn't eased, together with blurred vision.",
   severity: "Critical" as const,
 };
-
-/* ------------------------------------------------------------------ */
-/* Voice orb: soft translucent gold discs orbiting a bright centre     */
-/* ------------------------------------------------------------------ */
-
-type OrbMode = "idle" | "speaking" | "listening" | "danger";
-
-function VoiceOrb({ mode }: { mode: OrbMode }) {
-  return (
-    <div
-      aria-hidden="true"
-      className={`voice-orb ${
-        mode === "listening"
-          ? "is-listening"
-          : mode === "speaking"
-            ? "is-speaking"
-            : mode === "danger"
-              ? "is-danger"
-              : ""
-      }`}
-      style={{ width: "min(230px, 28vh)", height: "min(230px, 28vh)" }}
-    >
-      <span className="voice-orb__bloom" />
-      {[0, 1, 2, 3, 4, 5].map((i) => (
-        <span key={i} className="voice-orb__petal">
-          <span className="voice-orb__disc" />
-        </span>
-      ))}
-      <span className="voice-orb__core" />
-      {mode === "danger" && (
-        <span className="danger-core-icon" aria-hidden="true">
-          <AlertTriangle size={42} strokeWidth={2.1} />
-        </span>
-      )}
-    </div>
-  );
-}
 
 /* ------------------------------------------------------------------ */
 /* Animated words: the question types itself in, word by word          */
@@ -343,7 +307,7 @@ export function VoiceCheckin() {
     setSpeaking(true);
   }, [questionIndex]);
 
-  const orbMode: OrbMode =
+  const orbMode: "idle" | "speaking" | "listening" | "danger" =
     completed && dangerSimulated
       ? "danger"
       : listening
