@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import {
   ArrowRight,
-  Check,
   ChevronLeft,
   Eye,
   EyeOff,
@@ -187,7 +186,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
   const [swap, setSwap] = useState(false);
   const timerRef = useRef<number | null>(null);
@@ -204,14 +202,12 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
   useEffect(() => {
     setMode(initialMode);
     setErrors({});
-    setNotice("");
   }, [initialMode]);
 
   const switchMode = (next: Mode) => {
     if (next === mode) return;
     setSwap(true);
     setErrors({});
-    setNotice("");
     timerRef.current = window.setTimeout(() => {
       // Change the real route so the URL, back button and app state stay in sync.
       router.push(next === "login" ? "/login" : "/register");
@@ -237,7 +233,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setNotice("");
     if (!validate()) return;
     setLoading(true);
 
@@ -278,8 +273,7 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
         return;
       }
       update({ name: `${account.firstName} ${account.lastName}`, email: account.email });
-      setLoading(false);
-      setNotice("Welcome back. Preparing your space…");
+      // Keep the button in its loading state; the splash screen takes over.
       timerRef.current = window.setTimeout(() => {
         router.push("/splash");
       }, 700);
@@ -406,16 +400,6 @@ export function AuthPage({ initialMode = "login" }: { initialMode?: Mode }) {
               <p className="mt-3 text-[12px] leading-relaxed text-[#85735a] dark:text-[#9c8b72]">
                 By continuing you agree to keep your account details private. This is a prototype —
                 accounts stay on this device.
-              </p>
-            )}
-
-            {notice && (
-              <p
-                role="status"
-                className="mt-4 flex items-start gap-2 rounded-2xl border border-[#c9a35d]/40 bg-[#fbe7b8]/50 px-3.5 py-2.5 text-[13px] leading-relaxed text-[#6f5a35] dark:border-[#e5be79]/35 dark:bg-[#e5be79]/16 dark:text-[#e5be79]"
-              >
-                <Check size={15} strokeWidth={2.4} className="mt-0.5 shrink-0" aria-hidden="true" />
-                {notice}
               </p>
             )}
 
