@@ -56,7 +56,7 @@ export function SplashPage() {
             style={{ animationDelay: "1.2s" }}
           />
           <span className="splash-breathe flex h-24 w-24 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] shadow-[0_18px_40px_-16px_rgba(60,45,25,0.65)] dark:bg-[#e5be79] dark:text-[#231b12] dark:shadow-[0_18px_44px_-14px_rgba(229,190,121,0.45)]">
-            <LeafMark className="h-[64px] w-[64px]" />
+            <LeafMark className="h-16 w-auto" />
           </span>
         </div>
 

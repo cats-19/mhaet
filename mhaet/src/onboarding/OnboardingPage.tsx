@@ -701,7 +701,7 @@ export function OnboardingPage() {
           {screen === "welcome" ? (
             <div className="flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]">
-                <LeafMark className="h-[23px] w-[23px]" />
+                <LeafMark className="h-[24px] w-auto" />
               </span>
               <span className="text-[16px] font-medium tracking-tight text-[#4a3f30] dark:text-[#f5ede0]">
                 aurelia

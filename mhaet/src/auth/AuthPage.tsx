@@ -53,7 +53,7 @@ function Brand() {
   return (
     <div className="flex items-center gap-2">
       <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]">
-        <LeafMark className="h-[25px] w-[25px]" />
+        <LeafMark className="h-[26px] w-auto" />
       </span>
       <span className="text-[18px] font-medium tracking-tight text-[#4a3f30] dark:text-[#f5ede0]">
         aurelia
