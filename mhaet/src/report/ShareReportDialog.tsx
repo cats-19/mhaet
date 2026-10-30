@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Copy, Download, Share2, X } from "lucide-react";
-import { BrandMark } from "../components/BrandMark";
+import { LeafMark } from "../components/LeafMark";
 import { QRCodeSVG } from "qrcode.react";
 
 type CopyState = "idle" | "copied" | "manual";
@@ -201,7 +201,7 @@ export function ShareReportDialog({
               aria-hidden="true"
               className="pointer-events-none absolute left-1/2 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-[#fffdf8] text-[#a87a3d] ring-4 ring-[#fffdf8]"
             >
-              <BrandMark className="h-[23px] w-[23px]" cut="#fffdf8" />
+              <LeafMark className="h-[23px] w-[23px]" cut="#fffdf8" />
             </span>
           </div>
           <p className="mt-3 text-center text-[12.5px] leading-relaxed text-[#6f6149] dark:text-[#b9a88e]">

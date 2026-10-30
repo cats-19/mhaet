@@ -16,7 +16,7 @@ import {
   Plus,
   X,
 } from "lucide-react";
-import { BrandMark } from "../components/BrandMark";
+import { LeafMark } from "../components/LeafMark";
 import { ThemeSelect } from "../components/ThemeSelect";
 import { LanguageSwitcher } from "../components/LanguageSwitcher";
 import {
@@ -701,7 +701,7 @@ export function OnboardingPage() {
           {screen === "welcome" ? (
             <div className="flex items-center gap-2">
               <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#3b3226] text-[#fbe7b8] dark:bg-[#e5be79] dark:text-[#231b12]">
-                <BrandMark className="h-[21px] w-[21px]" />
+                <LeafMark className="h-[21px] w-[21px]" />
               </span>
               <span className="text-[16px] font-medium tracking-tight text-[#4a3f30] dark:text-[#f5ede0]">
                 aurelia
